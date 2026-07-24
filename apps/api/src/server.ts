@@ -10,6 +10,7 @@ import fundingRoutes from './routes/fundingRoutes.js';
 import startupRoutes from './routes/startupRoutes.js';
 import collaborationRoutes from './routes/collaborationRoutes.js';
 import analyticsRoutes from './routes/analyticsRoutes.js';
+import aiRoutes from './routes/aiRoutes.js';
 
 const app = express();
 
@@ -25,7 +26,7 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     system: 'AI-Powered Innovation Ecosystem Platform API',
-    phase: 'Phase 8 - Government & Policy Analytics Dashboard',
+    phase: 'Phase 9 - AI Engine Integration',
     country: 'Pakistan 🇵🇰',
     timestamp: new Date().toISOString()
   });
@@ -41,6 +42,7 @@ app.use('/api/funding', fundingRoutes);
 app.use('/api', startupRoutes);
 app.use('/api', collaborationRoutes);
 app.use('/api', analyticsRoutes);
+app.use('/api', aiRoutes);
 
 app.listen(CONFIG.PORT, () => {
   console.log(`🚀 [Innovation Ecosystem API] running on http://localhost:${CONFIG.PORT}`);

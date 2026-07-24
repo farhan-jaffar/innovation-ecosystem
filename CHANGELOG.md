@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.11.0] - 2026-07-25 (Phase 9 AI Engine Assistant Release)
+
+### Added
+- **AI Ecosystem Assistant Portal (`/ai-assistant`)**:
+  - Natural language conversational interface powered by xAI Grok & Groq Llama 3 for answering national innovation queries, university research patents, candidate matching, and R&D grant calls.
+  - Interactive prompt suggestions for quick research IP lookup, grant discovery, and talent extraction.
+- **FastAPI AI Engine Enhancements (`apps/ai-engine/main.py`)**:
+  - `POST /api/ai/extract-skills`: Extractor for technical skills, domains, and frameworks from text/CVs.
+  - `POST /api/ai/recommend/talent`: AI candidate matcher comparing project skill requirements against researcher profiles.
+  - `POST /api/ai/proposal-analysis`: Automated scorecard for funding proposals (evaluates innovation score, budget feasibility, and risk level).
+  - `POST /api/ai/chat`: Chatbot assistant endpoint with xAI Grok primary model and Groq Llama 3 fallback.
+- **Express Proxy AI Controller (`apps/api/src/routes/aiRoutes.ts`)**:
+  - Proxies AI requests to Python FastAPI AI service with client-side fallback handling.
+
+---
+
 ## [0.10.0] - 2026-07-25 (Phase 8 Government Policy & Analytics Release)
 
 ### Added
