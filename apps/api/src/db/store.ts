@@ -36,7 +36,13 @@ import {
   MentorshipRequest,
   StartupStage,
   OriginType,
-  MentorshipStatus
+  MentorshipStatus,
+  Workspace,
+  Channel,
+  ChatMessage,
+  WorkspaceTask,
+  VideoMeeting,
+  TaskStatus
 } from '@innovation/shared-types';
 
 export class DataStore {
@@ -58,6 +64,11 @@ export class DataStore {
   private mentors: Map<string, MentorProfile> = new Map();
   private investors: Map<string, InvestorProfile> = new Map();
   private mentorshipRequests: Map<string, MentorshipRequest> = new Map();
+  private workspaces: Map<string, Workspace> = new Map();
+  private channels: Map<string, Channel> = new Map();
+  private chatMessages: Map<string, ChatMessage> = new Map();
+  private workspaceTasks: Map<string, WorkspaceTask> = new Map();
+  private videoMeetings: Map<string, VideoMeeting> = new Map();
 
   private constructor() {
     this.seedInitialData();
@@ -193,123 +204,123 @@ export class DataStore {
     this.passwords.set(indUser.email, 'password123');
 
     // -------------------------------------------------------------
-    // SEED STARTUP HUB DATA (Phase 6 Data)
+    // SEED COLLABORATION WORKSPACE DATA (Phase 7 Data)
     // -------------------------------------------------------------
-    const start1: Startup = {
-      id: 'start-001',
-      founderIds: ['ind-001'],
-      founderUsernames: ['draliraza'],
-      name: 'CropVision AI',
-      tagline: 'Autonomous Drone & Edge AI Diagnostics for Agriculture',
-      description: 'CropVision AI is a FAST NUCES university research spin-off deploying edge-computer vision hardware on agricultural drones for early detection of crop rust across 50,000+ farmland acres in Punjab.',
-      industry: 'AgriTech',
-      stage: StartupStage.MVP,
-      foundedDate: '2025-06-15',
-      country: 'Pakistan',
-      city: 'Islamabad',
-      logo: 'https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=150',
-      website: 'https://cropvision.ai',
-      pitchDeckUrl: 'https://cropvision.ai/pitch-deck-2026.pdf',
-      demoUrl: 'https://cropvision.ai/demo',
-      teamSize: 6,
-      revenueRange: 'PRE_REVENUE',
-      fundingRaised: 5000000,
-      currency: 'PKR',
-      originType: OriginType.UNIVERSITY_RESEARCH,
-      linkedResearchIds: ['res-001', 'res-003'],
-      linkedUniversityId: 'uni-001',
-      universityName: 'FAST National University',
-      status: 'ACTIVE',
-      viewCount: 890,
-      createdAt: new Date(Date.now() - 86400000 * 15).toISOString(),
+    const chan1: Channel = {
+      id: 'chan-001',
+      workspaceId: 'ws-001',
+      name: 'general',
+      type: 'GENERAL',
+      createdAt: new Date().toISOString()
+    };
+
+    const chan2: Channel = {
+      id: 'chan-002',
+      workspaceId: 'ws-001',
+      name: 'dataset-collection',
+      type: 'ANNOUNCEMENTS',
+      createdAt: new Date().toISOString()
+    };
+
+    const chan3: Channel = {
+      id: 'chan-003',
+      workspaceId: 'ws-001',
+      name: 'edge-ai-deployment',
+      type: 'PRIVATE',
+      createdAt: new Date().toISOString()
+    };
+
+    const ws1: Workspace = {
+      id: 'ws-001',
+      projectId: 'opp-001',
+      name: 'MoITT AgriTech AI Grand Challenge Workspace',
+      description: 'National collaboration hub for Ministry directors, FAST university researchers, and drone hardware engineers working on hyperspectral crop diagnostics.',
+      members: [
+        { userId: 'gov-001', username: 'moitt', role: 'ADMIN' },
+        { userId: 'uni-001', username: 'fast-nuces', role: 'MEMBER' },
+        { userId: 'ind-001', username: 'draliraza', role: 'MEMBER' },
+        { userId: 'comp-001', username: 'systemsltd', role: 'VIEWER' }
+      ],
+      channels: [chan1, chan2, chan3],
+      createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
       updatedAt: new Date().toISOString()
     };
 
-    const start2: Startup = {
-      id: 'start-002',
-      founderIds: ['uni-001'],
-      founderUsernames: ['fast-nuces'],
-      name: 'SolarGrid Dynamics',
-      tagline: 'Deep Q-Learning Controllers for Remote Microgrids',
-      description: 'Clean energy hardware startup building AI battery management units based on IPO Pakistan Patent PK-2025-9812 to stabilize off-grid solar microgrids in KPK.',
-      industry: 'CleanEnergy',
-      stage: StartupStage.PROTOTYPE,
-      foundedDate: '2025-09-01',
-      country: 'Pakistan',
-      city: 'Peshawar',
-      logo: 'https://images.unsplash.com/photo-1509391365360-2e959784a276?w=150',
-      website: 'https://solargrid.pk',
-      pitchDeckUrl: 'https://solargrid.pk/deck.pdf',
-      teamSize: 4,
-      revenueRange: 'PRE_REVENUE',
-      fundingRaised: 2500000,
-      currency: 'PKR',
-      originType: OriginType.UNIVERSITY_RESEARCH,
-      linkedResearchIds: ['res-002'],
-      linkedUniversityId: 'uni-001',
-      universityName: 'FAST National University',
-      status: 'ACTIVE',
-      viewCount: 420,
-      createdAt: new Date(Date.now() - 86400000 * 25).toISOString(),
+    this.workspaces.set(ws1.id, ws1);
+    this.channels.set(chan1.id, chan1);
+    this.channels.set(chan2.id, chan2);
+    this.channels.set(chan3.id, chan3);
+
+    // Seed Messages
+    const msg1: ChatMessage = {
+      id: 'msg-001',
+      channelId: chan1.id,
+      senderId: 'ind-001',
+      senderName: 'Dr. Ali Raza',
+      content: 'Welcome everyone! We have acquired 10,000 multi-spectral crop rust aerial images across Multan field trials.',
+      createdAt: new Date(Date.now() - 86400000 * 2).toISOString()
+    };
+
+    const msg2: ChatMessage = {
+      id: 'msg-002',
+      channelId: chan1.id,
+      senderId: 'gov-001',
+      senderName: 'MoITT Representative',
+      content: 'Excellent progress Dr. Ali! Mobilization Grant (Tranche 1) has been approved and released to the FAST University lab account.',
+      createdAt: new Date(Date.now() - 86400000 * 1).toISOString()
+    };
+
+    this.chatMessages.set(msg1.id, msg1);
+    this.chatMessages.set(msg2.id, msg2);
+
+    // Seed Tasks
+    const task1: WorkspaceTask = {
+      id: 'wtask-001',
+      workspaceId: ws1.id,
+      title: 'Annotate Multan Wheat Rust Hyperspectral Bounding Boxes',
+      description: 'Annotate 2,500 new drone field images with 8 pathogen disease labels for YOLOv8 edge training.',
+      assignees: ['draliraza'],
+      createdBy: 'moitt',
+      status: TaskStatus.DONE,
+      priority: 'HIGH',
+      dueDate: '2026-12-30',
+      labels: ['Dataset', 'Annotation'],
+      createdAt: new Date(Date.now() - 86400000 * 4).toISOString(),
       updatedAt: new Date().toISOString()
     };
 
-    this.startups.set(start1.id, start1);
-    this.startups.set(start2.id, start2);
-
-    // Seed Mentor Profile
-    const mentor1: MentorProfile = {
-      id: 'mentor-001',
-      userId: 'comp-001',
-      username: 'systemsltd',
-      fullName: 'Zainab Khan',
-      title: 'Partner at Systems Ventures & Former VP of AI',
-      company: 'Systems Limited',
-      expertise: ['AI Product Scaling', 'Enterprise Go-To-Market', 'Fundraising', 'B2B Sales'],
-      industries: ['Robotics & AI', 'AgriTech', 'SaaS'],
-      mentorshipType: 'FREE',
-      maxMentees: 5,
-      activeMentees: 2,
-      availability: 'Alternate Saturdays (Zoom)',
-      bio: '15+ years scaling technology companies across Pakistan and GCC. Passionate about helping academic spin-offs achieve commercial product-market fit.',
-      avatarUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150'
+    const task2: WorkspaceTask = {
+      id: 'wtask-002',
+      workspaceId: ws1.id,
+      title: 'Benchmark Jetson Nano TensorRT Inference FPS',
+      description: 'Test compressed PyTorch model on drone onboard Jetson Nano hardware payload.',
+      assignees: ['draliraza', 'fast-nuces'],
+      createdBy: 'moitt',
+      status: TaskStatus.IN_PROGRESS,
+      priority: 'URGENT',
+      dueDate: '2027-03-15',
+      labels: ['Edge AI', 'Optimization'],
+      createdAt: new Date(Date.now() - 86400000 * 3).toISOString(),
+      updatedAt: new Date().toISOString()
     };
 
-    this.mentors.set(mentor1.id, mentor1);
+    this.workspaceTasks.set(task1.id, task1);
+    this.workspaceTasks.set(task2.id, task2);
 
-    // Seed Investor Profile
-    const investor1: InvestorProfile = {
-      id: 'inv-001',
-      userId: 'gov-001',
-      orgName: 'PakAgri Venture Capital Fund',
-      investorType: 'VC_FUND',
-      investmentStages: [StartupStage.MVP, StartupStage.GROWTH],
-      investmentDomains: ['AgriTech', 'CleanEnergy', 'Robotics & AI'],
-      ticketSizeMin: 5000000,
-      ticketSizeMax: 25000000,
-      currency: 'PKR',
-      portfolioStartups: ['CropVision AI', 'FarmGhar'],
-      investmentCriteria: 'Must have working prototype or MVP with university research IP lineage and local pilot traction.',
-      contactEmail: 'dealflow@pakagrive.com',
-      logo: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=150'
+    // Seed Jitsi Video Meeting
+    const meet1: VideoMeeting = {
+      id: 'meet-001',
+      workspaceId: ws1.id,
+      title: 'Weekly National AgriTech AI Lab Sync & Field Review',
+      scheduledAt: new Date(Date.now() + 86400000 * 2).toISOString(),
+      duration: '45 mins',
+      attendees: ['draliraza', 'moitt', 'fast-nuces'],
+      meetingUrl: 'https://meet.jit.si/InnovationEcosystem-AgriTech-Lab-001',
+      notes: 'Review Phase 2 Edge AI Model compression results.',
+      createdAt: new Date().toISOString()
     };
 
-    this.investors.set(investor1.id, investor1);
-
-    // Seed Mentorship Request
-    const mreq1: MentorshipRequest = {
-      id: 'mreq-001',
-      startupId: start1.id,
-      startupName: start1.name,
-      mentorId: mentor1.id,
-      mentorName: mentor1.fullName,
-      message: 'Hi Zainab! We are a FAST University AgriTech spin-off scaling our computer vision drone diagnostics to 50 farms and would love your guidance on enterprise B2B sales to fertilizer companies.',
-      status: MentorshipStatus.ACCEPTED,
-      scheduledDate: '2026-08-08T11:00:00Z',
-      createdAt: new Date(Date.now() - 86400000 * 3).toISOString()
-    };
-
-    this.mentorshipRequests.set(mreq1.id, mreq1);
+    this.videoMeetings.set(meet1.id, meet1);
   }
 
   // --- USER OPERATIONS ---
@@ -671,18 +682,15 @@ export class DataStore {
     return proj;
   }
 
-  // --- STARTUP HUB OPERATIONS (Phase 6) ---
   public getAllStartups(filters?: { stage?: string; industry?: string; originType?: string; search?: string }): Startup[] {
     let list = Array.from(this.startups.values());
-
     if (filters?.stage) list = list.filter(s => s.stage === filters.stage);
     if (filters?.industry) list = list.filter(s => s.industry.toLowerCase() === filters.industry?.toLowerCase());
     if (filters?.originType) list = list.filter(s => s.originType === filters.originType);
     if (filters?.search) {
       const q = filters.search.toLowerCase();
-      list = list.filter(s => s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.description.toLowerCase().includes(q));
+      list = list.filter(s => s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q));
     }
-
     return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
@@ -706,10 +714,6 @@ export class DataStore {
       const exp = filters.expertise.toLowerCase();
       list = list.filter(m => m.expertise.some(e => e.toLowerCase().includes(exp)));
     }
-    if (filters?.search) {
-      const q = filters.search.toLowerCase();
-      list = list.filter(m => m.fullName.toLowerCase().includes(q) || m.title.toLowerCase().includes(q) || m.bio.toLowerCase().includes(q));
-    }
     return list;
   }
 
@@ -727,9 +731,60 @@ export class DataStore {
     return req;
   }
 
-  public getMentorshipRequestsForMentor(mentorId: string): MentorshipRequest[] {
-    return Array.from(this.mentorshipRequests.values())
-      .filter(m => m.mentorId === mentorId)
+  // --- WORKSPACE COLLABORATION OPERATIONS (Phase 7) ---
+  public getAllWorkspaces(): Workspace[] {
+    return Array.from(this.workspaces.values())
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  public getWorkspaceById(id: string): Workspace | undefined {
+    return this.workspaces.get(id);
+  }
+
+  public createWorkspace(ws: Workspace): Workspace {
+    this.workspaces.set(ws.id, ws);
+    return ws;
+  }
+
+  public getChannelMessages(channelId: string): ChatMessage[] {
+    return Array.from(this.chatMessages.values())
+      .filter(m => m.channelId === channelId)
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+  }
+
+  public createChatMessage(msg: ChatMessage): ChatMessage {
+    this.chatMessages.set(msg.id, msg);
+    return msg;
+  }
+
+  public getWorkspaceTasks(workspaceId: string): WorkspaceTask[] {
+    return Array.from(this.workspaceTasks.values())
+      .filter(t => t.workspaceId === workspaceId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  public createWorkspaceTask(task: WorkspaceTask): WorkspaceTask {
+    this.workspaceTasks.set(task.id, task);
+    return task;
+  }
+
+  public updateWorkspaceTaskStatus(taskId: string, status: TaskStatus): WorkspaceTask | undefined {
+    const task = this.workspaceTasks.get(taskId);
+    if (!task) return undefined;
+    task.status = status;
+    task.updatedAt = new Date().toISOString();
+    this.workspaceTasks.set(taskId, task);
+    return task;
+  }
+
+  public getWorkspaceMeetings(workspaceId: string): VideoMeeting[] {
+    return Array.from(this.videoMeetings.values())
+      .filter(m => m.workspaceId === workspaceId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  public createVideoMeeting(meeting: VideoMeeting): VideoMeeting {
+    this.videoMeetings.set(meeting.id, meeting);
+    return meeting;
   }
 }

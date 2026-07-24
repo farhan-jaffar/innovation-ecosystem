@@ -156,6 +156,13 @@ export enum MentorshipStatus {
   COMPLETED = 'COMPLETED'
 }
 
+export enum TaskStatus {
+  TODO = 'TODO',
+  IN_PROGRESS = 'IN_PROGRESS',
+  REVIEW = 'REVIEW',
+  DONE = 'DONE'
+}
+
 export interface User {
   id: string;
   email: string;
@@ -571,6 +578,69 @@ export interface MentorshipRequest {
   message: string;
   status: MentorshipStatus;
   scheduledDate?: string;
+  createdAt: string;
+}
+
+export interface WorkspaceMember {
+  userId: string;
+  username: string;
+  role: 'ADMIN' | 'MEMBER' | 'VIEWER';
+}
+
+export interface Workspace {
+  id: string;
+  projectId?: string;
+  name: string;
+  description: string;
+  members: WorkspaceMember[];
+  channels: Channel[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Channel {
+  id: string;
+  workspaceId: string;
+  name: string;
+  type: 'GENERAL' | 'ANNOUNCEMENTS' | 'PRIVATE';
+  createdAt: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  channelId: string;
+  senderId: string;
+  senderName: string;
+  senderAvatar?: string;
+  content: string;
+  attachments?: string[];
+  createdAt: string;
+}
+
+export interface WorkspaceTask {
+  id: string;
+  workspaceId: string;
+  title: string;
+  description: string;
+  assignees: string[];
+  createdBy: string;
+  status: TaskStatus;
+  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
+  dueDate: string;
+  labels: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface VideoMeeting {
+  id: string;
+  workspaceId: string;
+  title: string;
+  scheduledAt: string;
+  duration: string;
+  attendees: string[];
+  meetingUrl: string;
+  notes?: string;
   createdAt: string;
 }
 

@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.9.0] - 2026-07-25 (Phase 7 Collaboration Suite Release)
+
+### Added
+- **National Collaboration Workspace Directory (`/workspace`)**: Workspace directory & selector portal replacing external tools (Slack, Notion, Jira) with integrated workspaces linked to national grant challenges.
+- **Integrated Workspace Hub (`/workspace/[id]`)**:
+  - **Tab 1: Real-time Channel Chat**: Multi-channel team chat (`#general`, `#dataset-collection`, `#edge-ai-deployment`) with instant message posting and file attachment support.
+  - **Tab 2: Project Tasks Kanban Board**: 4-column drag/status update Kanban board (`To Do`, `In Progress`, `Under Review`, `Completed`) with priority badges (`Urgent`, `High`, `Medium`) and task creation modal.
+  - **Tab 3: Embedded Jitsi Video Conference Room**: Zero-cost Jitsi Meet iframe integration (`https://meet.jit.si/InnovationEcosystem-AgriTech-Lab-001`) with live video, audio, screen share, and meeting notes.
+- **Collaboration Suite REST API Endpoints (`apps/api/src/routes/collaborationRoutes.ts`)**:
+  - `GET /api/workspaces` (get all workspaces)
+  - `GET /api/workspaces/:id` (workspace detail & channels)
+  - `GET /api/workspaces/channels/:channelId/messages` (channel chat message history)
+  - `POST /api/workspaces/channels/:channelId/messages` (post real-time chat message)
+  - `GET /api/workspaces/:id/tasks` (fetch workspace tasks)
+  - `POST /api/workspaces/:id/tasks` (create workspace task)
+  - `PUT /api/workspaces/tasks/:taskId` (update Kanban task status)
+  - `GET /api/workspaces/:id/meetings` (fetch scheduled meetings)
+  - `POST /api/workspaces/:id/meetings` (schedule Jitsi video meeting room)
+- **Domain Models & Seed Data**: Added `Workspace`, `Channel`, `ChatMessage`, `WorkspaceTask`, and `VideoMeeting` Prisma models and pre-loaded DataStore with realistic Pakistan workspace data (MoITT AgriTech AI Grand Challenge Workspace, 3 active channels, chat history, Kanban tasks, and Jitsi room).
+
+---
+
 ## [0.8.0] - 2026-07-25 (Phase 6 Startup Hub Release)
 
 ### Added

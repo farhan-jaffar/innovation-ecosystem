@@ -159,6 +159,13 @@ enum MentorshipStatus {
   COMPLETED
 }
 
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  REVIEW
+  DONE
+}
+
 model User {
   id            String      @id @default(uuid())
   email         String      @unique
@@ -559,4 +566,70 @@ model MentorshipRequest {
   status        MentorshipStatus @default(PENDING)
   scheduledDate DateTime?
   createdAt     DateTime         @default(now())
+}
+
+model Workspace {
+  id          String   @id @default(uuid())
+  projectId   String?
+  name        String
+  description String
+  members     Json     @default("[]")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  channels Channel[]
+  tasks    WorkspaceTask[]
+  meetings VideoMeeting[]
+}
+
+model Channel {
+  id          String   @id @default(uuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  name        String
+  type        String   @default("GENERAL")
+  createdAt   DateTime @default(now())
+
+  messages ChatMessage[]
+}
+
+model ChatMessage {
+  id          String   @id @default(uuid())
+  channelId   String
+  channel     Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  senderId    String
+  senderName  String
+  senderAvatar String?
+  content     String
+  attachments String[]
+  createdAt   DateTime @default(now())
+}
+
+model WorkspaceTask {
+  id          String     @id @default(uuid())
+  workspaceId String
+  workspace   Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+  assignees   String[]
+  createdBy   String
+  status      TaskStatus @default(TODO)
+  priority    String     @default("MEDIUM")
+  dueDate     DateTime
+  labels      String[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model VideoMeeting {
+  id          String    @id @default(uuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  title       String
+  scheduledAt DateTime
+  duration    String
+  attendees   String[]
+  meetingUrl  String
+  notes       String?
+  createdAt   DateTime  @default(now())
 }
