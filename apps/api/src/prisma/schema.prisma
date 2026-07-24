@@ -61,6 +61,20 @@ enum ApplicationStatus {
   REJECTED
 }
 
+enum PublicationType {
+  PAPER
+  PATENT
+  DATASET
+  PROTOTYPE
+  IDEA
+}
+
+enum AccessType {
+  OPEN
+  RESTRICTED
+  COMMERCIAL
+}
+
 model User {
   id            String      @id @default(uuid())
   email         String      @unique
@@ -80,6 +94,7 @@ model User {
   opportunities PostedOpportunity[]
   applications  Application[]
   bookmarks     Bookmark[]
+  researches    Research[]
 }
 
 model GovernmentProfile {
@@ -207,4 +222,48 @@ model Bookmark {
   createdAt     DateTime          @default(now())
 
   @@unique([userId, opportunityId])
+}
+
+model Research {
+  id               String          @id @default(uuid())
+  title            String
+  abstract         String
+  pdfUrl           String?
+  authors          String[]
+  affiliations     String[]
+  domain           String
+  subDomain        String?
+  keywords         String[]
+  publicationType  PublicationType @default(PAPER)
+  publishedDate    DateTime
+  journalName      String?
+  doi              String?
+  externalUrl      String?
+  license          String          @default("CC BY 4.0")
+  accessType       AccessType      @default(OPEN)
+  citations        Int             @default(0)
+  downloads        Int             @default(0)
+  views            Int             @default(0)
+  collaborationOpen Boolean        @default(true)
+  fundingRequest   Boolean         @default(false)
+  fundingAmount    Float?
+  status           String          @default("PUBLISHED")
+  postedBy         String
+  poster           User            @relation(fields: [postedBy], references: [id], onDelete: Cascade)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  collabInquiries ResearchCollabInquiry[]
+}
+
+model ResearchCollabInquiry {
+  id               String   @id @default(uuid())
+  researchId       String
+  research         Research @relation(fields: [researchId], references: [id], onDelete: Cascade)
+  inquirerId       String
+  inquiryType      String   @default("COMMERCIALIZATION")
+  message          String
+  contactEmail     String
+  status           String   @default("PENDING")
+  createdAt        DateTime @default(now())
 }

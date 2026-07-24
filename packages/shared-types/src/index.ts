@@ -52,6 +52,26 @@ export enum ApplicationStatus {
   REJECTED = 'REJECTED'
 }
 
+export enum PublicationType {
+  PAPER = 'PAPER',
+  PATENT = 'PATENT',
+  DATASET = 'DATASET',
+  PROTOTYPE = 'PROTOTYPE',
+  IDEA = 'IDEA'
+}
+
+export enum AccessType {
+  OPEN = 'OPEN',
+  RESTRICTED = 'RESTRICTED',
+  COMMERCIAL = 'COMMERCIAL'
+}
+
+export enum ResearchStatus {
+  DRAFT = 'DRAFT',
+  PUBLISHED = 'PUBLISHED',
+  ARCHIVED = 'ARCHIVED'
+}
+
 export interface User {
   id: string;
   email: string;
@@ -156,18 +176,18 @@ export interface Opportunity {
   title: string;
   description: string;
   type: ProjectType;
-  postedBy: string; // userId
+  postedBy: string;
   posterUsername: string;
   posterRole: UserRole;
   organizationName: string;
   organizationLogo?: string;
-  domain: string; // AI, HealthTech, AgriTech, CleanEnergy, EdTech, FinTech
+  domain: string;
   budget?: number;
-  currency: string; // PKR, USD
+  currency: string;
   budgetType: 'FIXED' | 'RANGE' | 'GRANT' | 'TBD';
   deadline: string;
   startDate?: string;
-  duration?: string; // e.g. "6 Months"
+  duration?: string;
   requiredSkills: string[];
   requiredRoles: string[];
   status: OpportunityStatus;
@@ -208,6 +228,53 @@ export interface Bookmark {
   id: string;
   userId: string;
   opportunityId: string;
+  createdAt: string;
+}
+
+export interface Research {
+  id: string;
+  title: string;
+  abstract: string;
+  pdfUrl?: string;
+  authors: string[];
+  affiliations: string[];
+  domain: string;
+  subDomain?: string;
+  keywords: string[];
+  publicationType: PublicationType;
+  publishedDate: string;
+  journalName?: string;
+  doi?: string;
+  externalUrl?: string;
+  license: string;
+  accessType: AccessType;
+  citations: number;
+  downloads: number;
+  views: number;
+  collaborationOpen: boolean;
+  fundingRequest: boolean;
+  fundingAmount?: number;
+  status: ResearchStatus;
+  postedBy: string;
+  posterUsername: string;
+  posterRole: UserRole;
+  organizationName: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ResearchCollabInquiry {
+  id: string;
+  researchId: string;
+  researchTitle: string;
+  inquirerId: string;
+  inquirerUsername: string;
+  inquirerRole: UserRole;
+  inquirerOrgName: string;
+  inquiryType: 'COMMERCIALIZATION' | 'JOINT_R_AND_D' | 'GOVT_INTEREST' | 'FUNDING';
+  message: string;
+  contactEmail: string;
+  status: 'PENDING' | 'ACCEPTED' | 'DECLINED';
   createdAt: string;
 }
 

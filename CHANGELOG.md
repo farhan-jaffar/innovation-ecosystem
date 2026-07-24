@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.5.0] - 2026-07-25 (Phase 3 Research Hub Release)
+
+### Added
+- **Research Hub Discovery Feed (`/research`)**: National repository for discovering research papers, patents, open datasets, and prototypes with domain filters, publication type pills (`Papers`, `Patents`, `Open Datasets`), live search, citation counters, and commercial funding request indicators.
+- **Publish Research / Patent Form (`/research/create`)**: Deposition form for academic papers, patent filings, and datasets supporting DOI references, open access licensing, and grant funding requests.
+- **Research Detail View (`/research/[id]`)**: Full abstract viewer with DOI citations, author affiliations, PDF download tracker, and interactive **Commercialization & Collaboration Request Modal**.
+- **University Research Showcase (`/universities/[id]/research`)**: Dedicated university showcase page for institutional IP and faculty publications.
+- **Individual Researcher Portfolio (`/profile/[username]/research`)**: Researcher portfolio page displaying authored papers, patents, and datasets.
+- **Research Hub REST API Endpoints (`apps/api/src/routes/researchRoutes.ts`)**:
+  - `GET /api/research` (filtered list by domain, publicationType, search, fundingRequest, author)
+  - `GET /api/research/:id` (detail & view counter)
+  - `POST /api/research` (publish research paper/patent/dataset)
+  - `POST /api/research/:id/download` (track PDF/Dataset downloads)
+  - `POST /api/research/:id/collab` (submit commercialization/grant inquiry to authors)
+- **Domain Models & Seed Data**: Added `Research` and `ResearchCollabInquiry` Prisma models and pre-loaded DataStore with realistic Pakistan research papers (Hyperspectral Crop Rust Detection), IP patents (Solar Microgrid DQN Controller), and Open Datasets (PCDH-2026).
+
+---
+
 ## [0.4.0] - 2026-07-25 (Phase 2 Innovation Marketplace Release)
 
 ### Added

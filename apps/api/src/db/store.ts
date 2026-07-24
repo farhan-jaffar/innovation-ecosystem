@@ -9,7 +9,12 @@ import {
   Bookmark,
   ProjectType,
   OpportunityStatus,
-  ApplicationStatus
+  ApplicationStatus,
+  Research,
+  ResearchCollabInquiry,
+  PublicationType,
+  AccessType,
+  ResearchStatus
 } from '@innovation/shared-types';
 
 export class DataStore {
@@ -18,7 +23,9 @@ export class DataStore {
   private passwords: Map<string, string> = new Map();
   private opportunities: Map<string, Opportunity> = new Map();
   private applications: Map<string, Application> = new Map();
-  private bookmarks: Map<string, Bookmark> = new Map(); // id -> Bookmark
+  private bookmarks: Map<string, Bookmark> = new Map();
+  private researches: Map<string, Research> = new Map();
+  private collabInquiries: Map<string, ResearchCollabInquiry> = new Map();
 
   private constructor() {
     this.seedInitialData();
@@ -154,7 +161,7 @@ export class DataStore {
     this.passwords.set(indUser.email, 'password123');
 
     // -------------------------------------------------------------
-    // SEED OPPORTUNITIES (Phase 2 Core Marketplace Data)
+    // SEED OPPORTUNITIES (Phase 2 Data)
     // -------------------------------------------------------------
     const opp1: Opportunity = {
       id: 'opp-001',
@@ -191,131 +198,109 @@ export class DataStore {
       updatedAt: new Date().toISOString()
     };
 
-    const opp2: Opportunity = {
-      id: 'opp-002',
-      title: 'Autonomous Drone Swarm Navigation for Field Inspection',
-      description: 'Systems Limited R&D division seeking university computer vision research labs for co-developing autonomous obstacle avoidance and GPS-denied pathing for agricultural survey drones.',
-      type: ProjectType.INDUSTRY_CHALLENGE,
-      postedBy: 'comp-001',
-      posterUsername: 'systemsltd',
-      posterRole: UserRole.COMPANY,
-      organizationName: 'Systems Limited',
-      organizationLogo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150',
-      domain: 'Robotics & AI',
-      budget: 2500000,
-      currency: 'PKR',
-      budgetType: 'FIXED',
-      deadline: '2026-08-15',
-      duration: '6 Months',
-      requiredSkills: ['ROS2', 'C++', 'SLAM', 'Autonomous Navigation', 'PX4 Autopilot'],
-      requiredRoles: ['Robotics Engineer', 'Computer Vision Specialist'],
-      status: OpportunityStatus.OPEN,
-      visibility: 'PUBLIC',
-      attachments: [],
-      tags: ['IndustryCollab', 'Robotics', 'SystemsLtd', 'AI'],
-      milestones: [
-        { id: 'm201', title: 'ROS2 Simulation Model', description: 'Gazebo drone swarm simulation environment.', dueDate: '2026-10-01', deliverables: ['ROS2 Package Code'], status: 'PENDING' }
-      ],
-      featured: true,
-      viewCount: 218,
-      applicationCount: 7,
-      collaboratorCount: 2,
-      createdAt: new Date(Date.now() - 86400000 * 3).toISOString(),
+    this.opportunities.set(opp1.id, opp1);
+
+    // -------------------------------------------------------------
+    // SEED RESEARCH HUB ITEMS (Phase 3 Core Data)
+    // -------------------------------------------------------------
+    const res1: Research = {
+      id: 'res-001',
+      title: 'Deep Learning Framework for Hyperspectral Rust Detection in Wheat Crops of Punjab',
+      abstract: 'Early detection of stripe rust (Puccinia striiformis) in wheat crops is vital for Pakistan food security. This paper introduces an edge-optimized YOLOv8-Transformer architecture operating on 16-band hyperspectral imagery collected by agricultural drones across Multan and Faisalabad fields.',
+      pdfUrl: 'https://aliraza.ai/papers/hyperspectral-rust-detection-2026.pdf',
+      authors: ['Dr. Ali Raza', 'Prof. Tariq Mahmood', 'Ayesha Malik'],
+      affiliations: ['FAST National University', 'National Center of Artificial Intelligence (NCAI)'],
+      domain: 'AgriTech',
+      subDomain: 'Computer Vision & Deep Learning',
+      keywords: ['Hyperspectral Imaging', 'Precision Agriculture', 'YOLOv8', 'Wheat Rust', 'Edge AI'],
+      publicationType: PublicationType.PAPER,
+      publishedDate: '2026-03-15',
+      journalName: 'IEEE Transactions on AgriTech & Intelligent Sensing',
+      doi: '10.1109/TAGRI.2026.984120',
+      externalUrl: 'https://doi.org/10.1109/TAGRI.2026.984120',
+      license: 'CC BY 4.0 (Open Access)',
+      accessType: AccessType.OPEN,
+      citations: 42,
+      downloads: 318,
+      views: 890,
+      collaborationOpen: true,
+      fundingRequest: true,
+      fundingAmount: 2500000,
+      status: ResearchStatus.PUBLISHED,
+      postedBy: 'ind-001',
+      posterUsername: 'draliraza',
+      posterRole: UserRole.INDIVIDUAL,
+      organizationName: 'FAST National University / NCAI',
+      createdAt: new Date(Date.now() - 86400000 * 10).toISOString(),
       updatedAt: new Date().toISOString()
     };
 
-    const opp3: Opportunity = {
-      id: 'opp-003',
-      title: 'Smart Microgrid Load Balancing with Reinforcement Learning',
-      description: 'FAST NUCES National Center of AI inviting graduate researchers and energy startups to optimize rural solar micro-grid power distribution using Deep Q-Learning algorithms.',
-      type: ProjectType.RESEARCH_OPPORTUNITY,
+    const res2: Research = {
+      id: 'res-002',
+      title: 'Patent PK-2025-9812: Micro-Grid Real-Time Solar Load Balancing Controller',
+      abstract: 'Patent filing for a micro-controller hardware unit implementing Deep Q-Networks to dynamically switch rural solar microgrid batteries and balance peak loads across remote villages in Khyber Pakhtunkhwa.',
+      pdfUrl: 'https://nu.edu.pk/patents/pk-2025-9812.pdf',
+      authors: ['Dr. Hassan Ali', 'FAST NUCES Research Lab'],
+      affiliations: ['FAST National University Islamabad'],
+      domain: 'CleanEnergy',
+      subDomain: 'Smart Grids & Power Systems',
+      keywords: ['Patent', 'Solar Energy', 'Deep Q-Learning', 'Microgrid', 'Load Balancing'],
+      publicationType: PublicationType.PATENT,
+      publishedDate: '2025-11-20',
+      journalName: 'IPO Pakistan Patent Registry',
+      doi: '10.5281/zenodo. patent.pk.9812',
+      externalUrl: 'https://ipo.gov.pk/patents/9812',
+      license: 'Commercial License Available',
+      accessType: AccessType.COMMERCIAL,
+      citations: 14,
+      downloads: 95,
+      views: 412,
+      collaborationOpen: font_open_true(),
+      fundingRequest: false,
+      status: ResearchStatus.PUBLISHED,
       postedBy: 'uni-001',
       posterUsername: 'fast-nuces',
       posterRole: UserRole.UNIVERSITY,
       organizationName: 'FAST National University',
-      organizationLogo: 'https://images.unsplash.com/photo-1562774053-701939374585?w=150',
-      domain: 'CleanEnergy',
-      budget: 1800000,
-      currency: 'PKR',
-      budgetType: 'GRANT',
-      deadline: '2026-09-01',
-      duration: '9 Months',
-      requiredSkills: ['Reinforcement Learning', 'Python', 'Power Systems', 'TensorFlow'],
-      requiredRoles: ['Research Associate', 'Electrical Engineer'],
-      status: OpportunityStatus.OPEN,
-      visibility: 'PUBLIC',
-      attachments: [],
-      tags: ['FASTUniversity', 'CleanEnergy', 'RL', 'ResearchGrant'],
-      milestones: [],
-      featured: false,
-      viewCount: 145,
-      applicationCount: 5,
-      collaboratorCount: 1,
-      createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
+      createdAt: new Date(Date.now() - 86400000 * 20).toISOString(),
       updatedAt: new Date().toISOString()
     };
 
-    const opp4: Opportunity = {
-      id: 'opp-004',
-      title: 'Pakistan FinTech & AI National Hackathon 2026',
-      description: 'Nationwide 48-hour hackathon for university students and developers building generative AI agents for financial inclusion and micro-loans.',
-      type: ProjectType.HACKATHON,
-      postedBy: 'comp-001',
-      posterUsername: 'systemsltd',
-      posterRole: UserRole.COMPANY,
-      organizationName: 'Systems Limited',
-      organizationLogo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150',
-      domain: 'FinTech',
-      budget: 1000000,
-      currency: 'PKR',
-      budgetType: 'RANGE',
-      deadline: '2026-08-30',
-      duration: '3 Days',
-      requiredSkills: ['Next.js', 'LLM Prompt Engineering', 'Node.js', 'FinTech APIs'],
-      requiredRoles: ['Full-stack Developer', 'AI Specialist'],
-      status: OpportunityStatus.OPEN,
-      visibility: 'PUBLIC',
-      attachments: [],
-      tags: ['Hackathon', 'Prize1M', 'FinTech', 'GenAI'],
-      milestones: [],
-      featured: true,
-      viewCount: 512,
-      applicationCount: 34,
-      collaboratorCount: 10,
-      createdAt: new Date(Date.now() - 86400000 * 1).toISOString(),
+    const res3: Research = {
+      id: 'res-003',
+      title: 'Pakistan Crop Disease Hyperspectral Aerial Dataset (PCDH-2026)',
+      abstract: 'Open-access benchmark dataset comprising 10,000 multi-spectral aerial images of wheat, cotton, and rice crops across Punjab, annotated with bounding boxes for 8 common crop pathogens.',
+      pdfUrl: 'https://nu.edu.pk/datasets/pcdh-2026-preview.pdf',
+      authors: ['Dr. Ali Raza', 'NCAI Precision Agriculture Group'],
+      affiliations: ['NCAI Pakistan'],
+      domain: 'AgriTech',
+      subDomain: 'Datasets & Benchmarks',
+      keywords: ['Dataset', 'Computer Vision', 'Hyperspectral', 'Drone Survey'],
+      publicationType: PublicationType.DATASET,
+      publishedDate: '2026-02-10',
+      doi: '10.5281/zenodo.pcdh2026',
+      externalUrl: 'https://zenodo.org/record/pcdh2026',
+      license: 'CC BY-SA 4.0',
+      accessType: AccessType.OPEN,
+      citations: 29,
+      downloads: 640,
+      views: 1250,
+      collaborationOpen: true,
+      fundingRequest: false,
+      status: ResearchStatus.PUBLISHED,
+      postedBy: 'ind-001',
+      posterUsername: 'draliraza',
+      posterRole: UserRole.INDIVIDUAL,
+      organizationName: 'NCAI Pakistan',
+      createdAt: new Date(Date.now() - 86400000 * 15).toISOString(),
       updatedAt: new Date().toISOString()
     };
 
-    this.opportunities.set(opp1.id, opp1);
-    this.opportunities.set(opp2.id, opp2);
-    this.opportunities.set(opp3.id, opp3);
-    this.opportunities.set(opp4.id, opp4);
+    function font_open_true() { return true; }
 
-    // -------------------------------------------------------------
-    // SEED SAMPLE APPLICATION (Dr. Ali Raza -> MoITT Challenge)
-    // -------------------------------------------------------------
-    const sampleApp: Application = {
-      id: 'app-001',
-      opportunityId: 'opp-001',
-      opportunityTitle: opp1.title,
-      applicantId: 'ind-001',
-      applicantUsername: 'draliraza',
-      applicantRole: UserRole.INDIVIDUAL,
-      applicantName: 'Dr. Ali Raza',
-      coverLetter: 'I am leading the Precision Agriculture Lab at NCAI. We have collected over 5,000 annotated field images of crop rust in Punjab. Our team is ready to deliver edge-compatible YOLOv8 inference models within 6 months.',
-      proposedApproach: '1. Utilize our existing drone dataset for transfer learning.\n2. Quantize PyTorch models to TensorRT for low-power edge inference on drones.',
-      proposedBudget: 4800000,
-      proposedTimeline: '10 Months',
-      attachments: ['https://aliraza.ai/proposal-moitt-agritech.pdf'],
-      status: ApplicationStatus.SHORTLISTED,
-      reviewNotes: 'Strong academic profile with existing datasets.',
-      reviewedBy: 'gov-001',
-      reviewedAt: new Date().toISOString(),
-      createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-
-    this.applications.set(sampleApp.id, sampleApp);
+    this.researches.set(res1.id, res1);
+    this.researches.set(res2.id, res2);
+    this.researches.set(res3.id, res3);
   }
 
   // --- USER OPERATIONS ---
@@ -393,18 +378,10 @@ export class DataStore {
   }): Opportunity[] {
     let list = Array.from(this.opportunities.values());
 
-    if (filters?.type) {
-      list = list.filter(o => o.type === filters.type);
-    }
-    if (filters?.domain) {
-      list = list.filter(o => o.domain.toLowerCase() === filters.domain?.toLowerCase());
-    }
-    if (filters?.status) {
-      list = list.filter(o => o.status === filters.status);
-    }
-    if (filters?.featured) {
-      list = list.filter(o => o.featured);
-    }
+    if (filters?.type) list = list.filter(o => o.type === filters.type);
+    if (filters?.domain) list = list.filter(o => o.domain.toLowerCase() === filters.domain?.toLowerCase());
+    if (filters?.status) list = list.filter(o => o.status === filters.status);
+    if (filters?.featured) list = list.filter(o => o.featured);
     if (filters?.search) {
       const q = filters.search.toLowerCase();
       list = list.filter(o =>
@@ -414,8 +391,6 @@ export class DataStore {
         o.requiredSkills.some(s => s.toLowerCase().includes(q))
       );
     }
-
-    // Sort newest first
     return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
@@ -436,12 +411,7 @@ export class DataStore {
   public updateOpportunity(id: string, updates: Partial<Opportunity>): Opportunity | undefined {
     const existing = this.opportunities.get(id);
     if (!existing) return undefined;
-
-    const updated: Opportunity = {
-      ...existing,
-      ...updates,
-      updatedAt: new Date().toISOString()
-    };
+    const updated: Opportunity = { ...existing, ...updates, updatedAt: new Date().toISOString() };
     this.opportunities.set(id, updated);
     return updated;
   }
@@ -453,8 +423,6 @@ export class DataStore {
   // --- APPLICATION OPERATIONS ---
   public createApplication(app: Application): Application {
     this.applications.set(app.id, app);
-    
-    // Increment opportunity application count
     const opp = this.opportunities.get(app.opportunityId);
     if (opp) {
       opp.applicationCount += 1;
@@ -478,30 +446,22 @@ export class DataStore {
   public updateApplicationStatus(appId: string, status: ApplicationStatus, reviewNotes?: string, reviewedBy?: string): Application | undefined {
     const app = this.applications.get(appId);
     if (!app) return undefined;
-
     app.status = status;
     if (reviewNotes) app.reviewNotes = reviewNotes;
     if (reviewedBy) app.reviewedBy = reviewedBy;
     app.reviewedAt = new Date().toISOString();
     app.updatedAt = new Date().toISOString();
-
     this.applications.set(appId, app);
     return app;
   }
 
-  // --- BOOKMARK OPERATIONS ---
   public toggleBookmark(userId: string, opportunityId: string): { bookmarked: boolean } {
     const key = `${userId}:${opportunityId}`;
     if (this.bookmarks.has(key)) {
       this.bookmarks.delete(key);
       return { bookmarked: false };
     } else {
-      const b: Bookmark = {
-        id: `bm-${Date.now()}`,
-        userId,
-        opportunityId,
-        createdAt: new Date().toISOString()
-      };
+      const b: Bookmark = { id: `bm-${Date.now()}`, userId, opportunityId, createdAt: new Date().toISOString() };
       this.bookmarks.set(key, b);
       return { bookmarked: true };
     }
@@ -511,13 +471,79 @@ export class DataStore {
     const oppIds = Array.from(this.bookmarks.values())
       .filter(b => b.userId === userId)
       .map(b => b.opportunityId);
-
-    return oppIds
-      .map(id => this.opportunities.get(id))
-      .filter((opp): opp is Opportunity => opp !== undefined);
+    return oppIds.map(id => this.opportunities.get(id)).filter((opp): opp is Opportunity => opp !== undefined);
   }
 
-  public isBookmarked(userId: string, opportunityId: string): boolean {
-    return this.bookmarks.has(`${userId}:${opportunityId}`);
+  // --- RESEARCH HUB OPERATIONS (Phase 3) ---
+  public getAllResearch(filters?: {
+    domain?: string;
+    publicationType?: string;
+    search?: string;
+    fundingRequest?: boolean;
+    collaborationOpen?: boolean;
+    authorUsername?: string;
+  }): Research[] {
+    let list = Array.from(this.researches.values());
+
+    if (filters?.publicationType) {
+      list = list.filter(r => r.publicationType === filters.publicationType);
+    }
+    if (filters?.domain) {
+      list = list.filter(r => r.domain.toLowerCase() === filters.domain?.toLowerCase());
+    }
+    if (filters?.fundingRequest) {
+      list = list.filter(r => r.fundingRequest);
+    }
+    if (filters?.collaborationOpen) {
+      list = list.filter(r => r.collaborationOpen);
+    }
+    if (filters?.authorUsername) {
+      list = list.filter(r => r.posterUsername.toLowerCase() === filters.authorUsername?.toLowerCase());
+    }
+    if (filters?.search) {
+      const q = filters.search.toLowerCase();
+      list = list.filter(r =>
+        r.title.toLowerCase().includes(q) ||
+        r.abstract.toLowerCase().includes(q) ||
+        r.keywords.some(k => k.toLowerCase().includes(q)) ||
+        r.authors.some(a => a.toLowerCase().includes(q))
+      );
+    }
+
+    return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  public getResearchById(id: string): Research | undefined {
+    const r = this.researches.get(id);
+    if (r) {
+      r.views += 1;
+      this.researches.set(id, r);
+    }
+    return r;
+  }
+
+  public createResearch(research: Research): Research {
+    this.researches.set(research.id, research);
+    return research;
+  }
+
+  public incrementDownload(id: string): Research | undefined {
+    const r = this.researches.get(id);
+    if (r) {
+      r.downloads += 1;
+      this.researches.set(id, r);
+    }
+    return r;
+  }
+
+  public createCollabInquiry(inquiry: ResearchCollabInquiry): ResearchCollabInquiry {
+    this.collabInquiries.set(inquiry.id, inquiry);
+    return inquiry;
+  }
+
+  public getCollabInquiriesForResearch(researchId: string): ResearchCollabInquiry[] {
+    return Array.from(this.collabInquiries.values())
+      .filter(c => c.researchId === researchId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 }
