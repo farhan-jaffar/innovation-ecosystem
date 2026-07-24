@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.10.0] - 2026-07-25 (Phase 8 Government Policy & Analytics Release)
+
+### Added
+- **National Government Innovation & Policy Dashboard (`/dashboard/government`)**:
+  - **4 Top KPI Cards**: Total Allocated R&D Grants (`PKR 28M`), Disbursed Funding (`PKR 10.5M`), Commercialization Rate (`41.6%`), Registered IP Patents (`5`), and Active Deep-Tech Startups (`2`).
+  - **Provincial Technology & Skill Heatmap**: Visual breakdown of talent density and growth rates across Punjab, Islamabad (ICT), Sindh, KPK, and Balochistan.
+  - **National University R&D Performance Board**: Ranking matrix tracking research publications, university spin-offs formed, and national grants won.
+- **Analytics REST API Endpoint (`apps/api/src/routes/analyticsRoutes.ts`)**:
+  - `GET /api/analytics/national` (computes national innovation metrics, provincial heatmaps, and university performance rankings)
+- **Domain Models & Seed Data**: Added `NationalAnalytics` interface in shared-types and implemented automated analytics calculations across all ecosystem domain entities in DataStore.
+
+---
+
 ## [0.9.0] - 2026-07-25 (Phase 7 Collaboration Suite Release)
 
 ### Added

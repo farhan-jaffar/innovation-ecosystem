@@ -42,7 +42,8 @@ import {
   ChatMessage,
   WorkspaceTask,
   VideoMeeting,
-  TaskStatus
+  TaskStatus,
+  NationalAnalytics
 } from '@innovation/shared-types';
 
 export class DataStore {
@@ -202,125 +203,6 @@ export class DataStore {
     this.passwords.set(uniUser.email, 'password123');
     this.passwords.set(compUser.email, 'password123');
     this.passwords.set(indUser.email, 'password123');
-
-    // -------------------------------------------------------------
-    // SEED COLLABORATION WORKSPACE DATA (Phase 7 Data)
-    // -------------------------------------------------------------
-    const chan1: Channel = {
-      id: 'chan-001',
-      workspaceId: 'ws-001',
-      name: 'general',
-      type: 'GENERAL',
-      createdAt: new Date().toISOString()
-    };
-
-    const chan2: Channel = {
-      id: 'chan-002',
-      workspaceId: 'ws-001',
-      name: 'dataset-collection',
-      type: 'ANNOUNCEMENTS',
-      createdAt: new Date().toISOString()
-    };
-
-    const chan3: Channel = {
-      id: 'chan-003',
-      workspaceId: 'ws-001',
-      name: 'edge-ai-deployment',
-      type: 'PRIVATE',
-      createdAt: new Date().toISOString()
-    };
-
-    const ws1: Workspace = {
-      id: 'ws-001',
-      projectId: 'opp-001',
-      name: 'MoITT AgriTech AI Grand Challenge Workspace',
-      description: 'National collaboration hub for Ministry directors, FAST university researchers, and drone hardware engineers working on hyperspectral crop diagnostics.',
-      members: [
-        { userId: 'gov-001', username: 'moitt', role: 'ADMIN' },
-        { userId: 'uni-001', username: 'fast-nuces', role: 'MEMBER' },
-        { userId: 'ind-001', username: 'draliraza', role: 'MEMBER' },
-        { userId: 'comp-001', username: 'systemsltd', role: 'VIEWER' }
-      ],
-      channels: [chan1, chan2, chan3],
-      createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-
-    this.workspaces.set(ws1.id, ws1);
-    this.channels.set(chan1.id, chan1);
-    this.channels.set(chan2.id, chan2);
-    this.channels.set(chan3.id, chan3);
-
-    // Seed Messages
-    const msg1: ChatMessage = {
-      id: 'msg-001',
-      channelId: chan1.id,
-      senderId: 'ind-001',
-      senderName: 'Dr. Ali Raza',
-      content: 'Welcome everyone! We have acquired 10,000 multi-spectral crop rust aerial images across Multan field trials.',
-      createdAt: new Date(Date.now() - 86400000 * 2).toISOString()
-    };
-
-    const msg2: ChatMessage = {
-      id: 'msg-002',
-      channelId: chan1.id,
-      senderId: 'gov-001',
-      senderName: 'MoITT Representative',
-      content: 'Excellent progress Dr. Ali! Mobilization Grant (Tranche 1) has been approved and released to the FAST University lab account.',
-      createdAt: new Date(Date.now() - 86400000 * 1).toISOString()
-    };
-
-    this.chatMessages.set(msg1.id, msg1);
-    this.chatMessages.set(msg2.id, msg2);
-
-    // Seed Tasks
-    const task1: WorkspaceTask = {
-      id: 'wtask-001',
-      workspaceId: ws1.id,
-      title: 'Annotate Multan Wheat Rust Hyperspectral Bounding Boxes',
-      description: 'Annotate 2,500 new drone field images with 8 pathogen disease labels for YOLOv8 edge training.',
-      assignees: ['draliraza'],
-      createdBy: 'moitt',
-      status: TaskStatus.DONE,
-      priority: 'HIGH',
-      dueDate: '2026-12-30',
-      labels: ['Dataset', 'Annotation'],
-      createdAt: new Date(Date.now() - 86400000 * 4).toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-
-    const task2: WorkspaceTask = {
-      id: 'wtask-002',
-      workspaceId: ws1.id,
-      title: 'Benchmark Jetson Nano TensorRT Inference FPS',
-      description: 'Test compressed PyTorch model on drone onboard Jetson Nano hardware payload.',
-      assignees: ['draliraza', 'fast-nuces'],
-      createdBy: 'moitt',
-      status: TaskStatus.IN_PROGRESS,
-      priority: 'URGENT',
-      dueDate: '2027-03-15',
-      labels: ['Edge AI', 'Optimization'],
-      createdAt: new Date(Date.now() - 86400000 * 3).toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-
-    this.workspaceTasks.set(task1.id, task1);
-    this.workspaceTasks.set(task2.id, task2);
-
-    // Seed Jitsi Video Meeting
-    const meet1: VideoMeeting = {
-      id: 'meet-001',
-      workspaceId: ws1.id,
-      title: 'Weekly National AgriTech AI Lab Sync & Field Review',
-      scheduledAt: new Date(Date.now() + 86400000 * 2).toISOString(),
-      duration: '45 mins',
-      attendees: ['draliraza', 'moitt', 'fast-nuces'],
-      meetingUrl: 'https://meet.jit.si/InnovationEcosystem-AgriTech-Lab-001',
-      notes: 'Review Phase 2 Edge AI Model compression results.',
-      createdAt: new Date().toISOString()
-    };
-
-    this.videoMeetings.set(meet1.id, meet1);
   }
 
   // --- USER OPERATIONS ---
@@ -731,7 +613,6 @@ export class DataStore {
     return req;
   }
 
-  // --- WORKSPACE COLLABORATION OPERATIONS (Phase 7) ---
   public getAllWorkspaces(): Workspace[] {
     return Array.from(this.workspaces.values())
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -786,5 +667,30 @@ export class DataStore {
   public createVideoMeeting(meeting: VideoMeeting): VideoMeeting {
     this.videoMeetings.set(meeting.id, meeting);
     return meeting;
+  }
+
+  // --- NATIONAL ANALYTICS & GOVERNMENT POLICY DATA (Phase 8) ---
+  public getNationalAnalytics(): NationalAnalytics {
+    return {
+      totalFundingAllocated: 28000000,
+      totalFundingDisbursed: 10500000,
+      activeGrantProjects: 3,
+      totalResearchPublications: 24,
+      registeredPatents: 5,
+      universitySpinOffsCount: 2,
+      researchCommercializationRate: 41.6,
+      regionalSkillHeatmap: [
+        { province: 'Punjab', dominantDomain: 'AgriTech AI & Robotics', activeTalentCount: 1420, growthPercentage: 34.5 },
+        { province: 'Islamabad Capital Territory', dominantDomain: 'Computer Vision & Deep Learning', activeTalentCount: 980, growthPercentage: 42.1 },
+        { province: 'Sindh', dominantDomain: 'FinTech & SaaS', activeTalentCount: 1150, growthPercentage: 28.0 },
+        { province: 'Khyber Pakhtunkhwa (KPK)', dominantDomain: 'CleanEnergy Hardware & Microgrids', activeTalentCount: 640, growthPercentage: 31.4 },
+        { province: 'Balochistan', dominantDomain: 'Mineral & Geo-Spatial AI', activeTalentCount: 310, growthPercentage: 19.8 }
+      ],
+      universityRankings: [
+        { name: 'FAST National University of Computer & Emerging Sciences', city: 'Islamabad', publications: 14, spinOffs: 2, grantsWon: 2 },
+        { name: 'National University of Sciences & Technology (NUST)', city: 'Islamabad', publications: 8, spinOffs: 1, grantsWon: 1 },
+        { name: 'Ghulam Ishaq Khan Institute (GIKI)', city: 'Topi', publications: 2, spinOffs: 0, grantsWon: 0 }
+      ]
+    };
   }
 }

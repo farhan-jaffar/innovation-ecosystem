@@ -84,6 +84,9 @@ export default function Navbar() {
             <Link href="/workspace" className="text-sm font-bold text-gray-700 hover:text-green-600 transition flex items-center gap-1">
               <MessageSquare className="w-3.5 h-3.5 text-green-600" /> Workspaces
             </Link>
+            <Link href="/dashboard/government" className="text-sm font-bold text-gray-700 hover:text-green-600 transition flex items-center gap-1">
+              <Shield className="w-3.5 h-3.5 text-green-600" /> Gov & Policy
+            </Link>
             <Link href="/explore" className="text-sm font-medium text-gray-700 hover:text-green-600 transition">
               Ecosystem Profiles
             </Link>

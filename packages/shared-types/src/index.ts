@@ -644,6 +644,29 @@ export interface VideoMeeting {
   createdAt: string;
 }
 
+export interface NationalAnalytics {
+  totalFundingAllocated: number;
+  totalFundingDisbursed: number;
+  activeGrantProjects: number;
+  totalResearchPublications: number;
+  registeredPatents: number;
+  universitySpinOffsCount: number;
+  researchCommercializationRate: number;
+  regionalSkillHeatmap: Array<{
+    province: string;
+    dominantDomain: string;
+    activeTalentCount: number;
+    growthPercentage: number;
+  }>;
+  universityRankings: Array<{
+    name: string;
+    city: string;
+    publications: number;
+    spinOffs: number;
+    grantsWon: number;
+  }>;
+}
+
 export interface AuthResponse {
   user: User;
   token: string;
