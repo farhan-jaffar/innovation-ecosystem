@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.6.0] - 2026-07-25 (Phase 4 Talent Marketplace Release)
+
+### Added
+- **Jobs & Fellowship Discovery Feed (`/jobs`)**: National tech job board with filters for job types (`Full Time`, `Research Fellowship`, `Internship`, `Contract`), domain chips, experience level badges, salary ranges, and remote/hybrid work toggle.
+- **Post a Position Form (`/jobs/create`)**: Job posting wizard for tech companies, university AI labs, and government agencies to recruit top candidates.
+- **Job Detail & Application Modal (`/jobs/[id]`)**: Position detail page with salary/perks, required technical skills, application modal with resume link, and **University Official Student Recommendation** modal.
+- **Company ATS Kanban Board (`/jobs/[id]/ats`)**: 6-column Applicant Tracking System (`Applied` ➔ `Screened` ➔ `Schedule Interview` ➔ `Offer Sent` ➔ `Hired` / `Rejected`) for recruiters.
+- **Talent Discovery Feed (`/talent`)**: Recruiter portal for browsing verified AI researchers, software engineers, Ph.D. scholars, and university students by skills, availability, and university affiliations.
+- **Talent Marketplace REST API Endpoints (`apps/api/src/routes/talentRoutes.ts`)**:
+  - `GET /api/jobs` (filtered job listings)
+  - `GET /api/jobs/talent-feed` (talent search directory)
+  - `GET /api/jobs/:id` (detail & view counter)
+  - `POST /api/jobs` (create job position)
+  - `POST /api/jobs/:id/apply` (submit job application & resume)
+  - `GET /api/jobs/:id/applications` (fetch candidates for ATS)
+  - `PUT /api/jobs/applications/:appId` (update ATS stage)
+  - `POST /api/jobs/:id/recommend` (university student endorsement)
+- **Domain Models & Seed Data**: Added `JobPosting`, `JobApplication`, and `UniversityRecommendation` Prisma models and pre-loaded DataStore with realistic Pakistan job openings (Senior AI Architect at Systems Limited, NCAI Research Fellow, Robotics Intern).
+
+---
+
 ## [0.5.0] - 2026-07-25 (Phase 3 Research Hub Release)
 
 ### Added

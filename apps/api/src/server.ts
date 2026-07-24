@@ -5,6 +5,7 @@ import authRoutes from './routes/authRoutes.js';
 import profileRoutes from './routes/profileRoutes.js';
 import marketplaceRoutes from './routes/marketplaceRoutes.js';
 import researchRoutes from './routes/researchRoutes.js';
+import talentRoutes from './routes/talentRoutes.js';
 
 const app = express();
 
@@ -20,7 +21,7 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     system: 'AI-Powered Innovation Ecosystem Platform API',
-    phase: 'Phase 3 - Research Hub',
+    phase: 'Phase 4 - Talent Marketplace',
     country: 'Pakistan 🇵🇰',
     timestamp: new Date().toISOString()
   });
@@ -31,6 +32,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', profileRoutes);
 app.use('/api/marketplace', marketplaceRoutes);
 app.use('/api/research', researchRoutes);
+app.use('/api/jobs', talentRoutes);
 
 app.listen(CONFIG.PORT, () => {
   console.log(`🚀 [Innovation Ecosystem API] running on http://localhost:${CONFIG.PORT}`);

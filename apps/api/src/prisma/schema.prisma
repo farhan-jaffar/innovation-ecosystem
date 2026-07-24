@@ -75,6 +75,37 @@ enum AccessType {
   COMMERCIAL
 }
 
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  INTERNSHIP
+  RESEARCH_POSITION
+  CONTRACT
+}
+
+enum ExperienceLevel {
+  ENTRY
+  MID
+  SENIOR
+  EXPERT
+}
+
+enum JobStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  CLOSED
+}
+
+enum JobApplicationStatus {
+  APPLIED
+  SCREENED
+  INTERVIEW
+  OFFER
+  HIRED
+  REJECTED
+}
+
 model User {
   id            String      @id @default(uuid())
   email         String      @unique
@@ -95,6 +126,8 @@ model User {
   applications  Application[]
   bookmarks     Bookmark[]
   researches    Research[]
+  jobPostings   JobPosting[]
+  jobApps       JobApplication[]
 }
 
 model GovernmentProfile {
@@ -225,45 +258,104 @@ model Bookmark {
 }
 
 model Research {
-  id               String          @id @default(uuid())
-  title            String
-  abstract         String
-  pdfUrl           String?
-  authors          String[]
-  affiliations     String[]
-  domain           String
-  subDomain        String?
-  keywords         String[]
-  publicationType  PublicationType @default(PAPER)
-  publishedDate    DateTime
-  journalName      String?
-  doi              String?
-  externalUrl      String?
-  license          String          @default("CC BY 4.0")
-  accessType       AccessType      @default(OPEN)
-  citations        Int             @default(0)
-  downloads        Int             @default(0)
-  views            Int             @default(0)
-  collaborationOpen Boolean        @default(true)
-  fundingRequest   Boolean         @default(false)
-  fundingAmount    Float?
-  status           String          @default("PUBLISHED")
-  postedBy         String
-  poster           User            @relation(fields: [postedBy], references: [id], onDelete: Cascade)
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
+  id                String          @id @default(uuid())
+  title             String
+  abstract          String
+  pdfUrl            String?
+  authors           String[]
+  affiliations      String[]
+  domain            String
+  subDomain         String?
+  keywords          String[]
+  publicationType   PublicationType @default(PAPER)
+  publishedDate     DateTime
+  journalName       String?
+  doi               String?
+  externalUrl       String?
+  license           String          @default("CC BY 4.0")
+  accessType        AccessType      @default(OPEN)
+  citations         Int             @default(0)
+  downloads         Int             @default(0)
+  views             Int             @default(0)
+  collaborationOpen Boolean         @default(true)
+  fundingRequest    Boolean         @default(false)
+  fundingAmount     Float?
+  status            String          @default("PUBLISHED")
+  postedBy          String
+  poster            User            @relation(fields: [postedBy], references: [id], onDelete: Cascade)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
 
   collabInquiries ResearchCollabInquiry[]
 }
 
 model ResearchCollabInquiry {
-  id               String   @id @default(uuid())
-  researchId       String
-  research         Research @relation(fields: [researchId], references: [id], onDelete: Cascade)
-  inquirerId       String
-  inquiryType      String   @default("COMMERCIALIZATION")
-  message          String
-  contactEmail     String
-  status           String   @default("PENDING")
-  createdAt        DateTime @default(now())
+  id           String   @id @default(uuid())
+  researchId   String
+  research     Research @relation(fields: [researchId], references: [id], onDelete: Cascade)
+  inquirerId   String
+  inquiryType  String   @default("COMMERCIALIZATION")
+  message      String
+  contactEmail String
+  status       String   @default("PENDING")
+  createdAt    DateTime @default(now())
+}
+
+model JobPosting {
+  id                  String          @id @default(uuid())
+  companyId           String
+  poster              User            @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  title               String
+  description         String
+  type                JobType         @default(FULL_TIME)
+  domain              String
+  requiredSkills      String[]
+  preferredSkills     String[]
+  experienceLevel     ExperienceLevel @default(MID)
+  salaryMin           Float?
+  salaryMax           Float?
+  currency            String          @default("PKR")
+  salaryType          String          @default("MONTHLY")
+  location            String
+  remote              Boolean         @default(false)
+  hybrid              Boolean         @default(false)
+  applicationDeadline DateTime
+  startDate           DateTime?
+  perks               String[]
+  responsibilities    String[]
+  requirements        String[]
+  status              JobStatus       @default(ACTIVE)
+  viewCount           Int             @default(0)
+  applicantCount      Int             @default(0)
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+
+  applications JobApplication[]
+}
+
+model JobApplication {
+  id             String               @id @default(uuid())
+  jobId          String
+  job            JobPosting           @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  applicantId    String
+  applicant      User                 @relation(fields: [applicantId], references: [id], onDelete: Cascade)
+  coverLetter    String
+  resumeUrl      String?
+  status         JobApplicationStatus @default(APPLIED)
+  notes          String?
+  interviewDate  DateTime?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  recommendations UniversityRecommendation[]
+}
+
+model UniversityRecommendation {
+  id             String         @id @default(uuid())
+  jobApplicationId String
+  jobApplication JobApplication @relation(fields: [jobApplicationId], references: [id], onDelete: Cascade)
+  universityId   String
+  studentId      String
+  note           String
+  createdAt      DateTime       @default(now())
 }

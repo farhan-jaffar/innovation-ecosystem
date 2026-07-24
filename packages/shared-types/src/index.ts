@@ -72,6 +72,37 @@ export enum ResearchStatus {
   ARCHIVED = 'ARCHIVED'
 }
 
+export enum JobType {
+  FULL_TIME = 'FULL_TIME',
+  PART_TIME = 'PART_TIME',
+  INTERNSHIP = 'INTERNSHIP',
+  RESEARCH_POSITION = 'RESEARCH_POSITION',
+  CONTRACT = 'CONTRACT'
+}
+
+export enum ExperienceLevel {
+  ENTRY = 'ENTRY',
+  MID = 'MID',
+  SENIOR = 'SENIOR',
+  EXPERT = 'EXPERT'
+}
+
+export enum JobStatus {
+  DRAFT = 'DRAFT',
+  ACTIVE = 'ACTIVE',
+  PAUSED = 'PAUSED',
+  CLOSED = 'CLOSED'
+}
+
+export enum JobApplicationStatus {
+  APPLIED = 'APPLIED',
+  SCREENED = 'SCREENED',
+  INTERVIEW = 'INTERVIEW',
+  OFFER = 'OFFER',
+  HIRED = 'HIRED',
+  REJECTED = 'REJECTED'
+}
+
 export interface User {
   id: string;
   email: string;
@@ -275,6 +306,68 @@ export interface ResearchCollabInquiry {
   message: string;
   contactEmail: string;
   status: 'PENDING' | 'ACCEPTED' | 'DECLINED';
+  createdAt: string;
+}
+
+export interface JobPosting {
+  id: string;
+  companyId: string;
+  companyName: string;
+  companyLogo?: string;
+  title: string;
+  description: string;
+  type: JobType;
+  domain: string;
+  requiredSkills: string[];
+  preferredSkills: string[];
+  experienceLevel: ExperienceLevel;
+  salaryMin?: number;
+  salaryMax?: number;
+  currency: string;
+  salaryType: 'MONTHLY' | 'YEARLY';
+  location: string;
+  remote: boolean;
+  hybrid: boolean;
+  applicationDeadline: string;
+  startDate?: string;
+  perks: string[];
+  responsibilities: string[];
+  requirements: string[];
+  status: JobStatus;
+  viewCount: number;
+  applicantCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface JobApplication {
+  id: string;
+  jobId: string;
+  jobTitle: string;
+  companyName: string;
+  applicantId: string;
+  applicantUsername: string;
+  applicantName: string;
+  applicantEmail: string;
+  coverLetter: string;
+  resumeUrl?: string;
+  status: JobApplicationStatus;
+  notes?: string;
+  interviewDate?: string;
+  recommendations?: UniversityRecommendation[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UniversityRecommendation {
+  id: string;
+  jobId: string;
+  jobTitle: string;
+  universityId: string;
+  universityName: string;
+  studentId: string;
+  studentName: string;
+  note: string;
   createdAt: string;
 }
 

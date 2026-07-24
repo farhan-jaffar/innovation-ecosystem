@@ -14,7 +14,14 @@ import {
   ResearchCollabInquiry,
   PublicationType,
   AccessType,
-  ResearchStatus
+  ResearchStatus,
+  JobPosting,
+  JobApplication,
+  UniversityRecommendation,
+  JobType,
+  ExperienceLevel,
+  JobStatus,
+  JobApplicationStatus
 } from '@innovation/shared-types';
 
 export class DataStore {
@@ -26,6 +33,9 @@ export class DataStore {
   private bookmarks: Map<string, Bookmark> = new Map();
   private researches: Map<string, Research> = new Map();
   private collabInquiries: Map<string, ResearchCollabInquiry> = new Map();
+  private jobs: Map<string, JobPosting> = new Map();
+  private jobApplications: Map<string, JobApplication> = new Map();
+  private universityRecommendations: Map<string, UniversityRecommendation> = new Map();
 
   private constructor() {
     this.seedInitialData();
@@ -161,146 +171,128 @@ export class DataStore {
     this.passwords.set(indUser.email, 'password123');
 
     // -------------------------------------------------------------
-    // SEED OPPORTUNITIES (Phase 2 Data)
+    // SEED JOBS & TALENT POSITIONS (Phase 4 Data)
     // -------------------------------------------------------------
-    const opp1: Opportunity = {
-      id: 'opp-001',
-      title: 'National AI Challenge: Hyperspectral Crop Disease Detection',
-      description: 'The Ministry of IT & Telecom invites AI startups, university labs, and researchers to develop computer vision algorithms for real-time crop rust & infestation detection across Punjab and Sindh farmland.',
-      type: ProjectType.GOVERNMENT_CHALLENGE,
-      postedBy: 'gov-001',
-      posterUsername: 'moitt',
-      posterRole: UserRole.GOVERNMENT,
-      organizationName: 'Ministry of IT & Telecommunication',
-      organizationLogo: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=150',
-      domain: 'AgriTech',
-      budget: 5000000,
+    const job1: JobPosting = {
+      id: 'job-001',
+      companyId: 'comp-001',
+      companyName: 'Systems Limited',
+      companyLogo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150',
+      title: 'Senior Computer Vision & AI Architect',
+      description: 'Systems Limited Enterprise AI Division is hiring a Senior AI Architect to design and deploy real-time computer vision pipelines for industrial automation and agricultural aerial diagnostics.',
+      type: JobType.FULL_TIME,
+      domain: 'Robotics & AI',
+      requiredSkills: ['Computer Vision', 'PyTorch', 'YOLOv8', 'Python', 'Docker', 'CUDA'],
+      preferredSkills: ['ROS2', 'TensorRT', 'Kubernetes'],
+      experienceLevel: ExperienceLevel.SENIOR,
+      salaryMin: 300000,
+      salaryMax: 500000,
       currency: 'PKR',
-      budgetType: 'GRANT',
-      deadline: '2026-09-30',
-      startDate: '2026-10-15',
-      duration: '12 Months',
-      requiredSkills: ['Computer Vision', 'PyTorch', 'Hyperspectral Datasets', 'YOLOv8', 'AgriTech'],
-      requiredRoles: ['Lead AI Researcher', 'Data Scientist', 'Embedded Edge AI Engineer'],
-      status: OpportunityStatus.OPEN,
-      visibility: 'PUBLIC',
-      attachments: ['https://moitt.gov.pk/rfp-ai-agritech-2026.pdf'],
-      tags: ['NationalAI', 'PrecisionAgriculture', 'Grant5M', 'MoITT'],
-      milestones: [
-        { id: 'm1', title: 'Data Collection & Annotation Phase', description: 'Acquire 10k aerial hyperspectral field images.', dueDate: '2026-12-01', deliverables: ['Annotated Dataset', 'Baseline Model'], status: 'IN_PROGRESS' },
-        { id: 'm2', title: 'Field Edge Deployment Test', description: 'Deploy model on Raspberry Pi / Jetson Nano on drone payload.', dueDate: '2027-03-01', deliverables: ['Edge Inference API', 'Accuracy Benchmark Report'], status: 'PENDING' }
+      salaryType: 'MONTHLY',
+      location: 'Lahore / Hybrid',
+      remote: true,
+      hybrid: true,
+      applicationDeadline: '2026-09-15',
+      perks: ['Health Insurance', 'Annual Performance Bonus', 'Remote Work Flexibility', 'Conference Grants'],
+      responsibilities: [
+        'Architect end-to-end PyTorch deep learning models for edge deployment.',
+        'Collaborate with university research labs on technology transfer.'
       ],
-      featured: true,
-      viewCount: 342,
-      applicationCount: 12,
-      collaboratorCount: 4,
-      createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
+      requirements: [
+        'M.S. or Ph.D. in Computer Science, AI, or Electrical Engineering.',
+        '5+ years hands-on experience deploying PyTorch models in production.'
+      ],
+      status: JobStatus.ACTIVE,
+      viewCount: 420,
+      applicantCount: 18,
+      createdAt: new Date(Date.now() - 86400000 * 4).toISOString(),
       updatedAt: new Date().toISOString()
     };
 
-    this.opportunities.set(opp1.id, opp1);
-
-    // -------------------------------------------------------------
-    // SEED RESEARCH HUB ITEMS (Phase 3 Core Data)
-    // -------------------------------------------------------------
-    const res1: Research = {
-      id: 'res-001',
-      title: 'Deep Learning Framework for Hyperspectral Rust Detection in Wheat Crops of Punjab',
-      abstract: 'Early detection of stripe rust (Puccinia striiformis) in wheat crops is vital for Pakistan food security. This paper introduces an edge-optimized YOLOv8-Transformer architecture operating on 16-band hyperspectral imagery collected by agricultural drones across Multan and Faisalabad fields.',
-      pdfUrl: 'https://aliraza.ai/papers/hyperspectral-rust-detection-2026.pdf',
-      authors: ['Dr. Ali Raza', 'Prof. Tariq Mahmood', 'Ayesha Malik'],
-      affiliations: ['FAST National University', 'National Center of Artificial Intelligence (NCAI)'],
+    const job2: JobPosting = {
+      id: 'job-002',
+      companyId: 'uni-001',
+      companyName: 'FAST National University (NCAI Lab)',
+      companyLogo: 'https://images.unsplash.com/photo-1562774053-701939374585?w=150',
+      title: 'Precision Agriculture Postdoctoral AI Fellow',
+      description: 'National Center of Artificial Intelligence (NCAI) at FAST NUCES is seeking a Postdoc Fellow to lead hyperspectral crop rust diagnostic algorithms under Ministry grant.',
+      type: JobType.RESEARCH_POSITION,
       domain: 'AgriTech',
-      subDomain: 'Computer Vision & Deep Learning',
-      keywords: ['Hyperspectral Imaging', 'Precision Agriculture', 'YOLOv8', 'Wheat Rust', 'Edge AI'],
-      publicationType: PublicationType.PAPER,
-      publishedDate: '2026-03-15',
-      journalName: 'IEEE Transactions on AgriTech & Intelligent Sensing',
-      doi: '10.1109/TAGRI.2026.984120',
-      externalUrl: 'https://doi.org/10.1109/TAGRI.2026.984120',
-      license: 'CC BY 4.0 (Open Access)',
-      accessType: AccessType.OPEN,
-      citations: 42,
-      downloads: 318,
-      views: 890,
-      collaborationOpen: true,
-      fundingRequest: true,
-      fundingAmount: 2500000,
-      status: ResearchStatus.PUBLISHED,
-      postedBy: 'ind-001',
-      posterUsername: 'draliraza',
-      posterRole: UserRole.INDIVIDUAL,
-      organizationName: 'FAST National University / NCAI',
-      createdAt: new Date(Date.now() - 86400000 * 10).toISOString(),
+      requiredSkills: ['Hyperspectral Imaging', 'PyTorch', 'Remote Sensing', 'Python'],
+      preferredSkills: ['Drone Flight Operations', 'QGIS'],
+      experienceLevel: ExperienceLevel.EXPERT,
+      salaryMin: 180000,
+      salaryMax: 250000,
+      currency: 'PKR',
+      salaryType: 'MONTHLY',
+      location: 'Islamabad',
+      remote: false,
+      hybrid: true,
+      applicationDeadline: '2026-08-30',
+      perks: ['HEC Postdoc Stipend', 'Lab Equipment Access', 'IEEE Publication Subsidies'],
+      responsibilities: ['Publish top-tier journal papers', 'Mentor M.S. research students'],
+      requirements: ['Ph.D. in Computer Vision or Remote Sensing'],
+      status: JobStatus.ACTIVE,
+      viewCount: 290,
+      applicantCount: 8,
+      createdAt: new Date(Date.now() - 86400000 * 6).toISOString(),
       updatedAt: new Date().toISOString()
     };
 
-    const res2: Research = {
-      id: 'res-002',
-      title: 'Patent PK-2025-9812: Micro-Grid Real-Time Solar Load Balancing Controller',
-      abstract: 'Patent filing for a micro-controller hardware unit implementing Deep Q-Networks to dynamically switch rural solar microgrid batteries and balance peak loads across remote villages in Khyber Pakhtunkhwa.',
-      pdfUrl: 'https://nu.edu.pk/patents/pk-2025-9812.pdf',
-      authors: ['Dr. Hassan Ali', 'FAST NUCES Research Lab'],
-      affiliations: ['FAST National University Islamabad'],
-      domain: 'CleanEnergy',
-      subDomain: 'Smart Grids & Power Systems',
-      keywords: ['Patent', 'Solar Energy', 'Deep Q-Learning', 'Microgrid', 'Load Balancing'],
-      publicationType: PublicationType.PATENT,
-      publishedDate: '2025-11-20',
-      journalName: 'IPO Pakistan Patent Registry',
-      doi: '10.5281/zenodo. patent.pk.9812',
-      externalUrl: 'https://ipo.gov.pk/patents/9812',
-      license: 'Commercial License Available',
-      accessType: AccessType.COMMERCIAL,
-      citations: 14,
-      downloads: 95,
-      views: 412,
-      collaborationOpen: font_open_true(),
-      fundingRequest: false,
-      status: ResearchStatus.PUBLISHED,
-      postedBy: 'uni-001',
-      posterUsername: 'fast-nuces',
-      posterRole: UserRole.UNIVERSITY,
-      organizationName: 'FAST National University',
-      createdAt: new Date(Date.now() - 86400000 * 20).toISOString(),
+    const job3: JobPosting = {
+      id: 'job-003',
+      companyId: 'comp-001',
+      companyName: 'Systems Limited',
+      companyLogo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150',
+      title: 'Embedded Edge AI & Drone Autopilot Intern',
+      description: '3-month paid summer internship for final year university students building ROS2 drone autopilot firmware and Jetson Nano inference models.',
+      type: JobType.INTERNSHIP,
+      domain: 'Robotics & AI',
+      requiredSkills: ['C++', 'Python', 'ROS2', 'Linux'],
+      preferredSkills: ['PX4 Autopilot', 'Raspberry Pi'],
+      experienceLevel: ExperienceLevel.ENTRY,
+      salaryMin: 60000,
+      salaryMax: 90000,
+      currency: 'PKR',
+      salaryType: 'MONTHLY',
+      location: 'Islamabad / Lahore',
+      remote: false,
+      hybrid: true,
+      applicationDeadline: '2026-08-15',
+      perks: ['Mentorship by Senior Architects', 'Full-time Hire Opportunity'],
+      responsibilities: ['Write unit tests for ROS2 packages', 'Benchmark Jetson inference FPS'],
+      requirements: ['Final year CS/EE undergraduate student with GPA > 3.2'],
+      status: JobStatus.ACTIVE,
+      viewCount: 680,
+      applicantCount: 45,
+      createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
       updatedAt: new Date().toISOString()
     };
 
-    const res3: Research = {
-      id: 'res-003',
-      title: 'Pakistan Crop Disease Hyperspectral Aerial Dataset (PCDH-2026)',
-      abstract: 'Open-access benchmark dataset comprising 10,000 multi-spectral aerial images of wheat, cotton, and rice crops across Punjab, annotated with bounding boxes for 8 common crop pathogens.',
-      pdfUrl: 'https://nu.edu.pk/datasets/pcdh-2026-preview.pdf',
-      authors: ['Dr. Ali Raza', 'NCAI Precision Agriculture Group'],
-      affiliations: ['NCAI Pakistan'],
-      domain: 'AgriTech',
-      subDomain: 'Datasets & Benchmarks',
-      keywords: ['Dataset', 'Computer Vision', 'Hyperspectral', 'Drone Survey'],
-      publicationType: PublicationType.DATASET,
-      publishedDate: '2026-02-10',
-      doi: '10.5281/zenodo.pcdh2026',
-      externalUrl: 'https://zenodo.org/record/pcdh2026',
-      license: 'CC BY-SA 4.0',
-      accessType: AccessType.OPEN,
-      citations: 29,
-      downloads: 640,
-      views: 1250,
-      collaborationOpen: true,
-      fundingRequest: false,
-      status: ResearchStatus.PUBLISHED,
-      postedBy: 'ind-001',
-      posterUsername: 'draliraza',
-      posterRole: UserRole.INDIVIDUAL,
-      organizationName: 'NCAI Pakistan',
-      createdAt: new Date(Date.now() - 86400000 * 15).toISOString(),
+    this.jobs.set(job1.id, job1);
+    this.jobs.set(job2.id, job2);
+    this.jobs.set(job3.id, job3);
+
+    // Seed Sample Job Application (Dr. Ali Raza -> Systems Ltd AI Architect)
+    const sampleJobApp: JobApplication = {
+      id: 'japp-001',
+      jobId: 'job-001',
+      jobTitle: job1.title,
+      companyName: job1.companyName,
+      applicantId: 'ind-001',
+      applicantUsername: 'draliraza',
+      applicantName: 'Dr. Ali Raza',
+      applicantEmail: 'ali.raza@researcher.pk',
+      coverLetter: 'Having completed my Ph.D. at NUST and led drone computer vision projects at NCAI, I am eager to architect commercial scale AI solutions at Systems Limited.',
+      resumeUrl: 'https://aliraza.ai/cv-2026.pdf',
+      status: JobApplicationStatus.INTERVIEW,
+      notes: 'Strong candidate with doctorate and 42 citations.',
+      interviewDate: '2026-08-05T10:00:00Z',
+      createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
       updatedAt: new Date().toISOString()
     };
 
-    function font_open_true() { return true; }
-
-    this.researches.set(res1.id, res1);
-    this.researches.set(res2.id, res2);
-    this.researches.set(res3.id, res3);
+    this.jobApplications.set(sampleJobApp.id, sampleJobApp);
   }
 
   // --- USER OPERATIONS ---
@@ -368,28 +360,44 @@ export class DataStore {
     return Array.from(this.users.values());
   }
 
-  // --- OPPORTUNITY OPERATIONS (Phase 2 Marketplace) ---
-  public getAllOpportunities(filters?: {
-    type?: string;
-    domain?: string;
-    search?: string;
-    status?: string;
-    featured?: boolean;
-  }): Opportunity[] {
-    let list = Array.from(this.opportunities.values());
+  // --- TALENT DISCOVERY OPERATIONS ---
+  public getAllTalent(filters?: { search?: string; domain?: string; skill?: string }): User[] {
+    let list = Array.from(this.users.values()).filter(u => u.role === UserRole.INDIVIDUAL);
 
+    if (filters?.search) {
+      const q = filters.search.toLowerCase();
+      list = list.filter(u => {
+        const prof = u.profile as any;
+        return (
+          u.username.toLowerCase().includes(q) ||
+          prof?.firstName?.toLowerCase().includes(q) ||
+          prof?.headline?.toLowerCase().includes(q) ||
+          prof?.skills?.some((s: string) => s.toLowerCase().includes(q))
+        );
+      });
+    }
+
+    if (filters?.skill) {
+      const sk = filters.skill.toLowerCase();
+      list = list.filter(u => {
+        const prof = u.profile as any;
+        return prof?.skills?.some((s: string) => s.toLowerCase().includes(sk));
+      });
+    }
+
+    return list;
+  }
+
+  // --- OPPORTUNITY OPERATIONS ---
+  public getAllOpportunities(filters?: { type?: string; domain?: string; search?: string; status?: string; featured?: boolean }): Opportunity[] {
+    let list = Array.from(this.opportunities.values());
     if (filters?.type) list = list.filter(o => o.type === filters.type);
     if (filters?.domain) list = list.filter(o => o.domain.toLowerCase() === filters.domain?.toLowerCase());
     if (filters?.status) list = list.filter(o => o.status === filters.status);
     if (filters?.featured) list = list.filter(o => o.featured);
     if (filters?.search) {
       const q = filters.search.toLowerCase();
-      list = list.filter(o =>
-        o.title.toLowerCase().includes(q) ||
-        o.description.toLowerCase().includes(q) ||
-        o.organizationName.toLowerCase().includes(q) ||
-        o.requiredSkills.some(s => s.toLowerCase().includes(q))
-      );
+      list = list.filter(o => o.title.toLowerCase().includes(q) || o.description.toLowerCase().includes(q));
     }
     return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
@@ -420,7 +428,6 @@ export class DataStore {
     return this.opportunities.delete(id);
   }
 
-  // --- APPLICATION OPERATIONS ---
   public createApplication(app: Application): Application {
     this.applications.set(app.id, app);
     const opp = this.opportunities.get(app.opportunityId);
@@ -432,15 +439,11 @@ export class DataStore {
   }
 
   public getApplicationsForOpportunity(oppId: string): Application[] {
-    return Array.from(this.applications.values())
-      .filter(a => a.opportunityId === oppId)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return Array.from(this.applications.values()).filter(a => a.opportunityId === oppId);
   }
 
   public getApplicationsForUser(userId: string): Application[] {
-    return Array.from(this.applications.values())
-      .filter(a => a.applicantId === userId)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return Array.from(this.applications.values()).filter(a => a.applicantId === userId);
   }
 
   public updateApplicationStatus(appId: string, status: ApplicationStatus, reviewNotes?: string, reviewedBy?: string): Application | undefined {
@@ -468,48 +471,21 @@ export class DataStore {
   }
 
   public getUserBookmarks(userId: string): Opportunity[] {
-    const oppIds = Array.from(this.bookmarks.values())
-      .filter(b => b.userId === userId)
-      .map(b => b.opportunityId);
+    const oppIds = Array.from(this.bookmarks.values()).filter(b => b.userId === userId).map(b => b.opportunityId);
     return oppIds.map(id => this.opportunities.get(id)).filter((opp): opp is Opportunity => opp !== undefined);
   }
 
-  // --- RESEARCH HUB OPERATIONS (Phase 3) ---
-  public getAllResearch(filters?: {
-    domain?: string;
-    publicationType?: string;
-    search?: string;
-    fundingRequest?: boolean;
-    collaborationOpen?: boolean;
-    authorUsername?: string;
-  }): Research[] {
+  public getAllResearch(filters?: { domain?: string; publicationType?: string; search?: string; fundingRequest?: boolean; collaborationOpen?: boolean; authorUsername?: string }): Research[] {
     let list = Array.from(this.researches.values());
-
-    if (filters?.publicationType) {
-      list = list.filter(r => r.publicationType === filters.publicationType);
-    }
-    if (filters?.domain) {
-      list = list.filter(r => r.domain.toLowerCase() === filters.domain?.toLowerCase());
-    }
-    if (filters?.fundingRequest) {
-      list = list.filter(r => r.fundingRequest);
-    }
-    if (filters?.collaborationOpen) {
-      list = list.filter(r => r.collaborationOpen);
-    }
-    if (filters?.authorUsername) {
-      list = list.filter(r => r.posterUsername.toLowerCase() === filters.authorUsername?.toLowerCase());
-    }
+    if (filters?.publicationType) list = list.filter(r => r.publicationType === filters.publicationType);
+    if (filters?.domain) list = list.filter(r => r.domain.toLowerCase() === filters.domain?.toLowerCase());
+    if (filters?.fundingRequest) list = list.filter(r => r.fundingRequest);
+    if (filters?.collaborationOpen) list = list.filter(r => r.collaborationOpen);
+    if (filters?.authorUsername) list = list.filter(r => r.posterUsername.toLowerCase() === filters.authorUsername?.toLowerCase());
     if (filters?.search) {
       const q = filters.search.toLowerCase();
-      list = list.filter(r =>
-        r.title.toLowerCase().includes(q) ||
-        r.abstract.toLowerCase().includes(q) ||
-        r.keywords.some(k => k.toLowerCase().includes(q)) ||
-        r.authors.some(a => a.toLowerCase().includes(q))
-      );
+      list = list.filter(r => r.title.toLowerCase().includes(q) || r.abstract.toLowerCase().includes(q));
     }
-
     return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
@@ -542,8 +518,76 @@ export class DataStore {
   }
 
   public getCollabInquiriesForResearch(researchId: string): ResearchCollabInquiry[] {
-    return Array.from(this.collabInquiries.values())
-      .filter(c => c.researchId === researchId)
+    return Array.from(this.collabInquiries.values()).filter(c => c.researchId === researchId);
+  }
+
+  // --- JOB MARKETPLACE OPERATIONS (Phase 4) ---
+  public getAllJobs(filters?: { type?: string; domain?: string; experienceLevel?: string; remote?: boolean; search?: string }): JobPosting[] {
+    let list = Array.from(this.jobs.values());
+
+    if (filters?.type) list = list.filter(j => j.type === filters.type);
+    if (filters?.domain) list = list.filter(j => j.domain.toLowerCase() === filters.domain?.toLowerCase());
+    if (filters?.experienceLevel) list = list.filter(j => j.experienceLevel === filters.experienceLevel);
+    if (filters?.remote) list = list.filter(j => j.remote);
+    if (filters?.search) {
+      const q = filters.search.toLowerCase();
+      list = list.filter(j => j.title.toLowerCase().includes(q) || j.description.toLowerCase().includes(q) || j.companyName.toLowerCase().includes(q));
+    }
+
+    return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  public getJobById(id: string): JobPosting | undefined {
+    const j = this.jobs.get(id);
+    if (j) {
+      j.viewCount += 1;
+      this.jobs.set(id, j);
+    }
+    return j;
+  }
+
+  public createJob(job: JobPosting): JobPosting {
+    this.jobs.set(job.id, job);
+    return job;
+  }
+
+  public createJobApplication(app: JobApplication): JobApplication {
+    this.jobApplications.set(app.id, app);
+    const job = this.jobs.get(app.jobId);
+    if (job) {
+      job.applicantCount += 1;
+      this.jobs.set(job.id, job);
+    }
+    return app;
+  }
+
+  public getApplicationsForJob(jobId: string): JobApplication[] {
+    return Array.from(this.jobApplications.values())
+      .filter(a => a.jobId === jobId)
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  public getApplicationsForApplicant(applicantId: string): JobApplication[] {
+    return Array.from(this.jobApplications.values())
+      .filter(a => a.applicantId === applicantId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  public updateJobApplicationStatus(appId: string, status: JobApplicationStatus, notes?: string, interviewDate?: string): JobApplication | undefined {
+    const app = this.jobApplications.get(appId);
+    if (!app) return undefined;
+
+    app.status = status;
+    if (notes) app.notes = notes;
+    if (interviewDate) app.interviewDate = interviewDate;
+    app.updatedAt = new Date().toISOString();
+
+    this.jobApplications.set(appId, app);
+    return app;
+  }
+
+  public addUniversityRecommendation(rec: UniversityRecommendation): UniversityRecommendation {
+    this.universityRecommendations.set(rec.id, rec);
+    return rec;
   }
 }
