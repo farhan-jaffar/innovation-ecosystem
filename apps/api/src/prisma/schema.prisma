@@ -138,6 +138,27 @@ enum FundingProposalStatus {
   REJECTED
 }
 
+enum StartupStage {
+  IDEA
+  PROTOTYPE
+  MVP
+  GROWTH
+  SCALE
+}
+
+enum OriginType {
+  UNIVERSITY_RESEARCH
+  PERSONAL
+  CORPORATE_SPINOFF
+}
+
+enum MentorshipStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  COMPLETED
+}
+
 model User {
   id            String      @id @default(uuid())
   email         String      @unique
@@ -215,7 +236,7 @@ model CompanyProfile {
 model IndividualProfile {
   id                String                 @id @default(uuid())
   userId            String                 @unique
-  user              User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user               User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
   firstName         String
   lastName          String
   headline          String
@@ -444,18 +465,98 @@ model FundingProposal {
 }
 
 model FundedProject {
-  id                   String          @id @default(uuid())
-  proposalId           String          @unique
-  proposal             FundingProposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
-  fundingTitle         String
-  recipientName        String
-  totalGrant           Float
-  disbursedAmount      Float           @default(0)
-  currentMilestoneIndex Int            @default(0)
-  milestones           Json            @default("[]")
-  disbursements        Json            @default("[]")
-  progressReports      String[]
-  status               String          @default("ACTIVE")
-  createdAt            DateTime        @default(now())
-  updatedAt            DateTime        @updatedAt
+  id                    String          @id @default(uuid())
+  proposalId            String          @unique
+  proposal              FundingProposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  fundingTitle          String
+  recipientName         String
+  totalGrant            Float
+  disbursedAmount       Float           @default(0)
+  currentMilestoneIndex Int             @default(0)
+  milestones            Json            @default("[]")
+  disbursements         Json            @default("[]")
+  progressReports       String[]
+  status                String          @default("ACTIVE")
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+}
+
+model Startup {
+  id                 String       @id @default(uuid())
+  founderIds         String[]
+  founderUsernames   String[]
+  name               String
+  tagline            String
+  description        String
+  industry           String
+  stage              StartupStage @default(MVP)
+  foundedDate        DateTime     @default(now())
+  country            String       @default("Pakistan")
+  city               String
+  logo               String?
+  website            String?
+  pitchDeckUrl       String?
+  demoUrl            String?
+  teamSize           Int          @default(1)
+  revenueRange       String       @default("PRE_REVENUE")
+  fundingRaised      Float        @default(0)
+  currency           String       @default("PKR")
+  originType         OriginType   @default(UNIVERSITY_RESEARCH)
+  linkedResearchIds  String[]
+  linkedUniversityId String?
+  universityName     String?
+  status             String       @default("ACTIVE")
+  viewCount          Int          @default(0)
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+
+  mentorshipRequests MentorshipRequest[]
+}
+
+model MentorProfile {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  username       String   @unique
+  fullName       String
+  title          String
+  company        String
+  expertise      String[]
+  industries     String[]
+  mentorshipType String   @default("FREE")
+  hourlyRate     Float?
+  maxMentees     Int      @default(5)
+  activeMentees  Int      @default(0)
+  availability   String   @default("WEEKDAYS")
+  bio            String
+  avatarUrl      String?
+
+  mentorshipRequests MentorshipRequest[]
+}
+
+model InvestorProfile {
+  id                 String   @id @default(uuid())
+  userId             String   @unique
+  orgName            String
+  investorType       String   @default("VC_FUND")
+  investmentStages   String[]
+  investmentDomains  String[]
+  ticketSizeMin      Float
+  ticketSizeMax      Float
+  currency           String   @default("PKR")
+  portfolioStartups  String[]
+  investmentCriteria String
+  contactEmail       String
+  logo               String?
+}
+
+model MentorshipRequest {
+  id            String           @id @default(uuid())
+  startupId     String
+  startup       Startup          @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  mentorId      String
+  mentor        MentorProfile    @relation(fields: [mentorId], references: [id], onDelete: Cascade)
+  message       String
+  status        MentorshipStatus @default(PENDING)
+  scheduledDate DateTime?
+  createdAt     DateTime         @default(now())
 }

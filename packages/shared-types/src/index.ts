@@ -135,6 +135,27 @@ export enum FundingProposalStatus {
   REJECTED = 'REJECTED'
 }
 
+export enum StartupStage {
+  IDEA = 'IDEA',
+  PROTOTYPE = 'PROTOTYPE',
+  MVP = 'MVP',
+  GROWTH = 'GROWTH',
+  SCALE = 'SCALE'
+}
+
+export enum OriginType {
+  UNIVERSITY_RESEARCH = 'UNIVERSITY_RESEARCH',
+  PERSONAL = 'PERSONAL',
+  CORPORATE_SPINOFF = 'CORPORATE_SPINOFF'
+}
+
+export enum MentorshipStatus {
+  PENDING = 'PENDING',
+  ACCEPTED = 'ACCEPTED',
+  DECLINED = 'DECLINED',
+  COMPLETED = 'COMPLETED'
+}
+
 export interface User {
   id: string;
   email: string;
@@ -475,6 +496,82 @@ export interface FundedProject {
   status: 'ACTIVE' | 'COMPLETED' | 'HALTED';
   createdAt: string;
   updatedAt: string;
+}
+
+export interface Startup {
+  id: string;
+  founderIds: string[];
+  founderUsernames: string[];
+  name: string;
+  tagline: string;
+  description: string;
+  industry: string;
+  stage: StartupStage;
+  foundedDate: string;
+  country: string;
+  city: string;
+  logo?: string;
+  website?: string;
+  pitchDeckUrl?: string;
+  demoUrl?: string;
+  teamSize: number;
+  revenueRange: string;
+  fundingRaised: number;
+  currency: string;
+  originType: OriginType;
+  linkedResearchIds: string[];
+  linkedUniversityId?: string;
+  universityName?: string;
+  status: 'ACTIVE' | 'STEALTH' | 'ACQUIRED' | 'CLOSED';
+  viewCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MentorProfile {
+  id: string;
+  userId: string;
+  username: string;
+  fullName: string;
+  title: string;
+  company: string;
+  expertise: string[];
+  industries: string[];
+  mentorshipType: 'FREE' | 'PAID';
+  hourlyRate?: number;
+  maxMentees: number;
+  activeMentees: number;
+  availability: string;
+  bio: string;
+  avatarUrl?: string;
+}
+
+export interface InvestorProfile {
+  id: string;
+  userId: string;
+  orgName: string;
+  investorType: 'ANGEL' | 'VC_FUND' | 'CORPORATE_VC' | 'FAMILY_OFFICE';
+  investmentStages: StartupStage[];
+  investmentDomains: string[];
+  ticketSizeMin: number;
+  ticketSizeMax: number;
+  currency: string;
+  portfolioStartups: string[];
+  investmentCriteria: string;
+  contactEmail: string;
+  logo?: string;
+}
+
+export interface MentorshipRequest {
+  id: string;
+  startupId: string;
+  startupName: string;
+  mentorId: string;
+  mentorName: string;
+  message: string;
+  status: MentorshipStatus;
+  scheduledDate?: string;
+  createdAt: string;
 }
 
 export interface AuthResponse {

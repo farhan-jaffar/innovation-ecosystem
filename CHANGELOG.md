@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.8.0] - 2026-07-25 (Phase 6 Startup Hub Release)
+
+### Added
+- **Startup & University Spin-Off Discovery Feed (`/startups`)**: Discovery portal for deep-tech startups and university spin-offs with stage pills (`MVP`, `Prototype`, `Growth`), industry filters, pitch deck PDF badges, and academic research lineage indicators.
+- **Register Startup Form (`/startups/create`)**: Registration flow for founders and university research spin-offs to publish pitch deck links, team size, funding raised, and affiliated university labs.
+- **Startup Profile View (`/startups/[id]`)**: Full startup showcase featuring team composition, academic IP lineage links, pitch deck viewer button, and direct mentorship request modal.
+- **Mentor Directory & Request Portal (`/mentors`)**: Verified industry mentor directory connecting startups with CTOs, VPs of AI, and venture partners for 1-on-1 advice.
+- **Investor Directory & VC Showcase (`/investors`)**: Showcase of seed stage venture capital funds, corporate VC arms, and angel investors backing deep-tech spin-offs in Pakistan.
+- **Startup Hub REST API Endpoints (`apps/api/src/routes/startupRoutes.ts`)**:
+  - `GET /api/startups` (filtered startup list)
+  - `GET /api/startups/:id` (startup profile & view counter)
+  - `POST /api/startups` (register startup profile)
+  - `GET /api/mentors` (mentor directory search)
+  - `GET /api/investors` (investor directory search)
+  - `POST /api/mentorship/request` (submit 1-on-1 mentorship request)
+- **Domain Models & Seed Data**: Added `Startup`, `MentorProfile`, `InvestorProfile`, and `MentorshipRequest` Prisma models and pre-loaded DataStore with realistic Pakistan startups (CropVision AI, SolarGrid Dynamics), mentors (Zainab Khan), and VC funds (PakAgri Ventures).
+
+---
+
 ## [0.7.0] - 2026-07-25 (Phase 5 Funding Marketplace Release)
 
 ### Added

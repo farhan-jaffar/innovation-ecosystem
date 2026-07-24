@@ -29,7 +29,14 @@ import {
   FundingEligibility,
   FundingOpportunityStatus,
   FundingProposalStatus,
-  Disbursement
+  Disbursement,
+  Startup,
+  MentorProfile,
+  InvestorProfile,
+  MentorshipRequest,
+  StartupStage,
+  OriginType,
+  MentorshipStatus
 } from '@innovation/shared-types';
 
 export class DataStore {
@@ -47,6 +54,10 @@ export class DataStore {
   private fundingOpps: Map<string, FundingOpportunity> = new Map();
   private fundingProposals: Map<string, FundingProposal> = new Map();
   private fundedProjects: Map<string, FundedProject> = new Map();
+  private startups: Map<string, Startup> = new Map();
+  private mentors: Map<string, MentorProfile> = new Map();
+  private investors: Map<string, InvestorProfile> = new Map();
+  private mentorshipRequests: Map<string, MentorshipRequest> = new Map();
 
   private constructor() {
     this.seedInitialData();
@@ -182,119 +193,123 @@ export class DataStore {
     this.passwords.set(indUser.email, 'password123');
 
     // -------------------------------------------------------------
-    // SEED FUNDING OPPORTUNITIES (Phase 5 Data)
+    // SEED STARTUP HUB DATA (Phase 6 Data)
     // -------------------------------------------------------------
-    const fund1: FundingOpportunity = {
-      id: 'fund-001',
-      funderId: 'gov-001',
-      funderUsername: 'moitt',
-      funderRole: UserRole.GOVERNMENT,
-      organizationName: 'Ministry of IT & Telecommunication (MoITT)',
-      organizationLogo: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=150',
-      title: 'National AI & AgriTech Grand Challenge Fund 2026',
-      description: 'MoITT is disbursing 15 Million PKR in milestone-based grant funding to university labs and AI startups developing deployment-ready computer vision solutions for agricultural pest diagnostic & crop yield optimization.',
-      type: FundingType.GRANT,
-      amount: 15000000,
+    const start1: Startup = {
+      id: 'start-001',
+      founderIds: ['ind-001'],
+      founderUsernames: ['draliraza'],
+      name: 'CropVision AI',
+      tagline: 'Autonomous Drone & Edge AI Diagnostics for Agriculture',
+      description: 'CropVision AI is a FAST NUCES university research spin-off deploying edge-computer vision hardware on agricultural drones for early detection of crop rust across 50,000+ farmland acres in Punjab.',
+      industry: 'AgriTech',
+      stage: StartupStage.MVP,
+      foundedDate: '2025-06-15',
+      country: 'Pakistan',
+      city: 'Islamabad',
+      logo: 'https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=150',
+      website: 'https://cropvision.ai',
+      pitchDeckUrl: 'https://cropvision.ai/pitch-deck-2026.pdf',
+      demoUrl: 'https://cropvision.ai/demo',
+      teamSize: 6,
+      revenueRange: 'PRE_REVENUE',
+      fundingRaised: 5000000,
       currency: 'PKR',
-      fundingType: 'MILESTONE_BASED',
-      eligibility: FundingEligibility.ANY,
-      domain: 'AgriTech',
-      requirements: [
-        'Must deploy PyTorch or TensorFlow edge AI models.',
-        'Must provide 10,000+ local dataset images annotated for Punjab crops.',
-        'Must demonstrate field test within 6 months.'
-      ],
-      applicationDeadline: '2026-10-30',
-      projectStartDate: '2026-11-15',
-      projectEndDate: '2027-11-15',
-      maxApplicants: 20,
-      documentsRequired: ['Technical Architecture Proposal', 'Budget Line Item Breakdown', 'University/Startup Registration Certificate'],
-      status: FundingOpportunityStatus.OPEN,
-      viewCount: 650,
-      proposalCount: 14,
-      createdAt: new Date(Date.now() - 86400000 * 7).toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-
-    const fund2: FundingOpportunity = {
-      id: 'fund-002',
-      funderId: 'gov-001',
-      funderUsername: 'moitt',
-      funderRole: UserRole.GOVERNMENT,
-      organizationName: 'Higher Education Commission (HEC Pakistan)',
-      organizationLogo: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=150',
-      title: 'HEC National Technology Transfer R&D Fund',
-      description: '8 Million PKR grant fund dedicated to university research faculties for patent commercialization and technology transfer to Pakistan industry partners.',
-      type: FundingType.RD_FUNDING,
-      amount: 8000000,
-      currency: 'PKR',
-      fundingType: 'MILESTONE_BASED',
-      eligibility: FundingEligibility.UNIVERSITY,
-      domain: 'CleanEnergy',
-      requirements: ['Must possess registered or filed patent', 'Must have corporate industrial partner endorsement'],
-      applicationDeadline: '2026-09-30',
-      documentsRequired: ['Patent Certificate', 'MOU with Corporate Partner'],
-      status: FundingOpportunityStatus.OPEN,
-      viewCount: 410,
-      proposalCount: 6,
-      createdAt: new Date(Date.now() - 86400000 * 12).toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-
-    this.fundingOpps.set(fund1.id, fund1);
-    this.fundingOpps.set(fund2.id, fund2);
-
-    // Seed Sample Funding Proposal (FAST University -> MoITT 5M Grant Proposal)
-    const prop1: FundingProposal = {
-      id: 'fprop-001',
-      fundingId: 'fund-001',
-      fundingTitle: fund1.title,
-      applicantId: 'uni-001',
-      applicantUsername: 'fast-nuces',
-      applicantRole: UserRole.UNIVERSITY,
-      applicantName: 'FAST National University / NCAI Lab',
-      proposalTitle: 'Hyperspectral Drone Diagnostics & Edge AI System for Wheat Rust',
-      proposalDescription: 'Proposal to deploy 12 multi-spectral agricultural drones paired with edge-AI Raspberry Pi inference payloads across Multan and Faisalabad fields.',
-      budget: 5000000,
-      timeline: '12 Months (4 Quarters)',
-      milestones: [
-        { id: 'fm1', title: 'Phase 1: Multi-Spectral Drone Field Data Collection', description: 'Acquire 10k aerial hyperspectral field images across 50 farms.', dueDate: '2026-12-30', deliverables: ['Annotated PCDH-2026 Dataset', 'Quarterly Progress Report'], status: 'COMPLETED' },
-        { id: 'fm2', title: 'Phase 2: Edge Jetson Nano Model Optimization', description: 'Compress YOLOv8 Transformer model for 45 FPS edge execution.', dueDate: '2027-03-30', deliverables: ['Edge Model Weights', 'Inference Benchmark'], status: 'COMPLETED' },
-        { id: 'fm3', title: 'Phase 3: Live Pilot Demonstration with Farmers', description: 'Deploy drone swarm in Multan and measure crop yield improvement.', dueDate: '2027-06-30', deliverables: ['Farmer Impact Study', 'Final System API'], status: 'IN_PROGRESS' }
-      ],
-      teamMembers: ['Dr. Ali Raza (Principal Investigator)', 'Prof. Tariq Mahmood', '3 FAST M.S. Research Assistants'],
-      attachments: ['https://nu.edu.pk/proposals/agritech-5m-moitt.pdf'],
-      status: FundingProposalStatus.APPROVED,
-      reviewerNotes: 'Outstanding proposal with proven academic track record and clear milestone deliverables.',
-      approvedAmount: 5000000,
-      createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-
-    this.fundingProposals.set(prop1.id, prop1);
-
-    // Seed 1 Active Funded Project with Disbursements
-    const funded1: FundedProject = {
-      id: 'fproj-001',
-      proposalId: prop1.id,
-      fundingTitle: fund1.title,
-      recipientName: 'FAST National University / NCAI Lab',
-      totalGrant: 5000000,
-      disbursedAmount: 2500000,
-      currentMilestoneIndex: 2,
-      milestones: prop1.milestones,
-      disbursements: [
-        { id: 'dis-001', amount: 1500000, date: '2026-11-20', status: 'RELEASED', note: 'Initial Mobilization & Sensor Purchase Grant' },
-        { id: 'dis-002', amount: 1000000, date: '2027-01-15', status: 'RELEASED', note: 'Phase 1 Dataset Completion Milestone Grant' },
-        { id: 'dis-003', amount: 2500000, date: '2027-07-01', status: 'PENDING', note: 'Phase 3 Live Field Pilot Milestone Release' }
-      ],
-      progressReports: ['https://nu.edu.pk/reports/q1-agritech-2026.pdf', 'https://nu.edu.pk/reports/q2-agritech-2027.pdf'],
+      originType: OriginType.UNIVERSITY_RESEARCH,
+      linkedResearchIds: ['res-001', 'res-003'],
+      linkedUniversityId: 'uni-001',
+      universityName: 'FAST National University',
       status: 'ACTIVE',
-      createdAt: new Date(Date.now() - 86400000 * 4).toISOString(),
+      viewCount: 890,
+      createdAt: new Date(Date.now() - 86400000 * 15).toISOString(),
       updatedAt: new Date().toISOString()
     };
 
-    this.fundedProjects.set(funded1.id, funded1);
+    const start2: Startup = {
+      id: 'start-002',
+      founderIds: ['uni-001'],
+      founderUsernames: ['fast-nuces'],
+      name: 'SolarGrid Dynamics',
+      tagline: 'Deep Q-Learning Controllers for Remote Microgrids',
+      description: 'Clean energy hardware startup building AI battery management units based on IPO Pakistan Patent PK-2025-9812 to stabilize off-grid solar microgrids in KPK.',
+      industry: 'CleanEnergy',
+      stage: StartupStage.PROTOTYPE,
+      foundedDate: '2025-09-01',
+      country: 'Pakistan',
+      city: 'Peshawar',
+      logo: 'https://images.unsplash.com/photo-1509391365360-2e959784a276?w=150',
+      website: 'https://solargrid.pk',
+      pitchDeckUrl: 'https://solargrid.pk/deck.pdf',
+      teamSize: 4,
+      revenueRange: 'PRE_REVENUE',
+      fundingRaised: 2500000,
+      currency: 'PKR',
+      originType: OriginType.UNIVERSITY_RESEARCH,
+      linkedResearchIds: ['res-002'],
+      linkedUniversityId: 'uni-001',
+      universityName: 'FAST National University',
+      status: 'ACTIVE',
+      viewCount: 420,
+      createdAt: new Date(Date.now() - 86400000 * 25).toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    this.startups.set(start1.id, start1);
+    this.startups.set(start2.id, start2);
+
+    // Seed Mentor Profile
+    const mentor1: MentorProfile = {
+      id: 'mentor-001',
+      userId: 'comp-001',
+      username: 'systemsltd',
+      fullName: 'Zainab Khan',
+      title: 'Partner at Systems Ventures & Former VP of AI',
+      company: 'Systems Limited',
+      expertise: ['AI Product Scaling', 'Enterprise Go-To-Market', 'Fundraising', 'B2B Sales'],
+      industries: ['Robotics & AI', 'AgriTech', 'SaaS'],
+      mentorshipType: 'FREE',
+      maxMentees: 5,
+      activeMentees: 2,
+      availability: 'Alternate Saturdays (Zoom)',
+      bio: '15+ years scaling technology companies across Pakistan and GCC. Passionate about helping academic spin-offs achieve commercial product-market fit.',
+      avatarUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150'
+    };
+
+    this.mentors.set(mentor1.id, mentor1);
+
+    // Seed Investor Profile
+    const investor1: InvestorProfile = {
+      id: 'inv-001',
+      userId: 'gov-001',
+      orgName: 'PakAgri Venture Capital Fund',
+      investorType: 'VC_FUND',
+      investmentStages: [StartupStage.MVP, StartupStage.GROWTH],
+      investmentDomains: ['AgriTech', 'CleanEnergy', 'Robotics & AI'],
+      ticketSizeMin: 5000000,
+      ticketSizeMax: 25000000,
+      currency: 'PKR',
+      portfolioStartups: ['CropVision AI', 'FarmGhar'],
+      investmentCriteria: 'Must have working prototype or MVP with university research IP lineage and local pilot traction.',
+      contactEmail: 'dealflow@pakagrive.com',
+      logo: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=150'
+    };
+
+    this.investors.set(investor1.id, investor1);
+
+    // Seed Mentorship Request
+    const mreq1: MentorshipRequest = {
+      id: 'mreq-001',
+      startupId: start1.id,
+      startupName: start1.name,
+      mentorId: mentor1.id,
+      mentorName: mentor1.fullName,
+      message: 'Hi Zainab! We are a FAST University AgriTech spin-off scaling our computer vision drone diagnostics to 50 farms and would love your guidance on enterprise B2B sales to fertilizer companies.',
+      status: MentorshipStatus.ACCEPTED,
+      scheduledDate: '2026-08-08T11:00:00Z',
+      createdAt: new Date(Date.now() - 86400000 * 3).toISOString()
+    };
+
+    this.mentorshipRequests.set(mreq1.id, mreq1);
   }
 
   // --- USER OPERATIONS ---
@@ -572,18 +587,15 @@ export class DataStore {
     return rec;
   }
 
-  // --- FUNDING MARKETPLACE OPERATIONS (Phase 5) ---
   public getAllFunding(filters?: { type?: string; eligibility?: string; domain?: string; search?: string }): FundingOpportunity[] {
     let list = Array.from(this.fundingOpps.values());
-
     if (filters?.type) list = list.filter(f => f.type === filters.type);
     if (filters?.eligibility) list = list.filter(f => f.eligibility === filters.eligibility || f.eligibility === FundingEligibility.ANY);
     if (filters?.domain) list = list.filter(f => f.domain.toLowerCase() === filters.domain?.toLowerCase());
     if (filters?.search) {
       const q = filters.search.toLowerCase();
-      list = list.filter(f => f.title.toLowerCase().includes(q) || f.description.toLowerCase().includes(q) || f.organizationName.toLowerCase().includes(q));
+      list = list.filter(f => f.title.toLowerCase().includes(q) || f.description.toLowerCase().includes(q));
     }
-
     return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
@@ -612,67 +624,26 @@ export class DataStore {
   }
 
   public getProposalsForFunding(fundingId: string): FundingProposal[] {
-    return Array.from(this.fundingProposals.values())
-      .filter(p => p.fundingId === fundingId)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return Array.from(this.fundingProposals.values()).filter(p => p.fundingId === fundingId);
   }
 
   public getProposalsForApplicant(applicantId: string): FundingProposal[] {
-    return Array.from(this.fundingProposals.values())
-      .filter(p => p.applicantId === applicantId)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return Array.from(this.fundingProposals.values()).filter(p => p.applicantId === applicantId);
   }
 
   public updateFundingProposalStatus(proposalId: string, status: FundingProposalStatus, reviewerNotes?: string, approvedAmount?: number): FundingProposal | undefined {
     const prop = this.fundingProposals.get(proposalId);
     if (!prop) return undefined;
-
     prop.status = status;
     if (reviewerNotes) prop.reviewerNotes = reviewerNotes;
     if (approvedAmount) prop.approvedAmount = approvedAmount;
     prop.updatedAt = new Date().toISOString();
-
     this.fundingProposals.set(proposalId, prop);
-
-    // If APPROVED, auto-create FundedProject entry
-    if (status === FundingProposalStatus.APPROVED) {
-      const existingProject = Array.from(this.fundedProjects.values()).find(fp => fp.proposalId === proposalId);
-      if (!existingProject) {
-        const newProject: FundedProject = {
-          id: `fproj-${Date.now()}`,
-          proposalId: prop.id,
-          fundingTitle: prop.fundingTitle,
-          recipientName: prop.applicantName,
-          totalGrant: approvedAmount || prop.budget,
-          disbursedAmount: 0,
-          currentMilestoneIndex: 0,
-          milestones: prop.milestones,
-          disbursements: [
-            {
-              id: `dis-${Date.now()}`,
-              amount: (approvedAmount || prop.budget) * 0.3,
-              date: new Date().toISOString().split('T')[0],
-              status: 'RELEASED',
-              note: 'Initial Mobilization Grant Release (30%)'
-            }
-          ],
-          progressReports: [],
-          status: 'ACTIVE',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        };
-
-        newProject.disbursedAmount = newProject.disbursements[0].amount;
-        this.fundedProjects.set(newProject.id, newProject);
-      }
-    }
-
     return prop;
   }
 
   public getAllFundedProjects(): FundedProject[] {
-    return Array.from(this.fundedProjects.values())
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return Array.from(this.fundedProjects.values());
   }
 
   public getFundedProjectById(id: string): FundedProject | undefined {
@@ -682,28 +653,83 @@ export class DataStore {
   public updateFundedProjectMilestone(projectId: string, milestoneIndex: number, newStatus: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED', releaseDisbursementAmount?: number): FundedProject | undefined {
     const proj = this.fundedProjects.get(projectId);
     if (!proj) return undefined;
-
     if (proj.milestones[milestoneIndex]) {
       proj.milestones[milestoneIndex].status = newStatus;
-      if (newStatus === 'COMPLETED') {
-        proj.currentMilestoneIndex = Math.min(milestoneIndex + 1, proj.milestones.length - 1);
-      }
     }
-
     if (releaseDisbursementAmount && releaseDisbursementAmount > 0) {
-      const newDisbursement: Disbursement = {
+      proj.disbursements.push({
         id: `dis-${Date.now()}`,
         amount: releaseDisbursementAmount,
         date: new Date().toISOString().split('T')[0],
         status: 'RELEASED',
         note: `Milestone ${milestoneIndex + 1} Completion Release`
-      };
-      proj.disbursements.push(newDisbursement);
+      });
       proj.disbursedAmount += releaseDisbursementAmount;
     }
-
     proj.updatedAt = new Date().toISOString();
     this.fundedProjects.set(projectId, proj);
     return proj;
+  }
+
+  // --- STARTUP HUB OPERATIONS (Phase 6) ---
+  public getAllStartups(filters?: { stage?: string; industry?: string; originType?: string; search?: string }): Startup[] {
+    let list = Array.from(this.startups.values());
+
+    if (filters?.stage) list = list.filter(s => s.stage === filters.stage);
+    if (filters?.industry) list = list.filter(s => s.industry.toLowerCase() === filters.industry?.toLowerCase());
+    if (filters?.originType) list = list.filter(s => s.originType === filters.originType);
+    if (filters?.search) {
+      const q = filters.search.toLowerCase();
+      list = list.filter(s => s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.description.toLowerCase().includes(q));
+    }
+
+    return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  public getStartupById(id: string): Startup | undefined {
+    const s = this.startups.get(id);
+    if (s) {
+      s.viewCount += 1;
+      this.startups.set(id, s);
+    }
+    return s;
+  }
+
+  public createStartup(startup: Startup): Startup {
+    this.startups.set(startup.id, startup);
+    return startup;
+  }
+
+  public getAllMentors(filters?: { expertise?: string; search?: string }): MentorProfile[] {
+    let list = Array.from(this.mentors.values());
+    if (filters?.expertise) {
+      const exp = filters.expertise.toLowerCase();
+      list = list.filter(m => m.expertise.some(e => e.toLowerCase().includes(exp)));
+    }
+    if (filters?.search) {
+      const q = filters.search.toLowerCase();
+      list = list.filter(m => m.fullName.toLowerCase().includes(q) || m.title.toLowerCase().includes(q) || m.bio.toLowerCase().includes(q));
+    }
+    return list;
+  }
+
+  public getAllInvestors(filters?: { stage?: string; domain?: string }): InvestorProfile[] {
+    let list = Array.from(this.investors.values());
+    if (filters?.domain) {
+      const dom = filters.domain.toLowerCase();
+      list = list.filter(i => i.investmentDomains.some(d => d.toLowerCase().includes(dom)));
+    }
+    return list;
+  }
+
+  public createMentorshipRequest(req: MentorshipRequest): MentorshipRequest {
+    this.mentorshipRequests.set(req.id, req);
+    return req;
+  }
+
+  public getMentorshipRequestsForMentor(mentorId: string): MentorshipRequest[] {
+    return Array.from(this.mentorshipRequests.values())
+      .filter(m => m.mentorId === mentorId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 }
