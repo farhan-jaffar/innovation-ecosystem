@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
-import { Shield, Building2, GraduationCap, UserCheck, Sparkles, LogOut, User as UserIcon, Settings, Menu, X, KeyRound, BookOpen, Briefcase, DollarSign, Rocket, MessageSquare } from 'lucide-react';
+import { Shield, Building2, GraduationCap, UserCheck, Sparkles, LogOut, User as UserIcon, Settings, Menu, X, KeyRound, BookOpen, Briefcase, DollarSign, Rocket, MessageSquare, Search } from 'lucide-react';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
