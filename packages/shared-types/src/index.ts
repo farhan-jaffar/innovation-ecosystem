@@ -103,6 +103,38 @@ export enum JobApplicationStatus {
   REJECTED = 'REJECTED'
 }
 
+export enum FundingType {
+  GRANT = 'GRANT',
+  SCHOLARSHIP = 'SCHOLARSHIP',
+  INNOVATION_CHALLENGE = 'INNOVATION_CHALLENGE',
+  SEED_FUNDING = 'SEED_FUNDING',
+  RD_FUNDING = 'RD_FUNDING'
+}
+
+export enum FundingEligibility {
+  INDIVIDUAL = 'INDIVIDUAL',
+  UNIVERSITY = 'UNIVERSITY',
+  STARTUP = 'STARTUP',
+  COMPANY = 'COMPANY',
+  ANY = 'ANY'
+}
+
+export enum FundingOpportunityStatus {
+  DRAFT = 'DRAFT',
+  OPEN = 'OPEN',
+  EVALUATION = 'EVALUATION',
+  CLOSED = 'CLOSED',
+  AWARDED = 'AWARDED'
+}
+
+export enum FundingProposalStatus {
+  SUBMITTED = 'SUBMITTED',
+  UNDER_REVIEW = 'UNDER_REVIEW',
+  SHORTLISTED = 'SHORTLISTED',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED'
+}
+
 export interface User {
   id: string;
   email: string;
@@ -369,6 +401,80 @@ export interface UniversityRecommendation {
   studentName: string;
   note: string;
   createdAt: string;
+}
+
+export interface FundingOpportunity {
+  id: string;
+  funderId: string;
+  funderUsername: string;
+  funderRole: UserRole;
+  organizationName: string;
+  organizationLogo?: string;
+  title: string;
+  description: string;
+  type: FundingType;
+  amount: number;
+  currency: string;
+  fundingType: 'FULL' | 'PARTIAL' | 'MILESTONE_BASED';
+  eligibility: FundingEligibility;
+  domain: string;
+  requirements: string[];
+  applicationDeadline: string;
+  projectStartDate?: string;
+  projectEndDate?: string;
+  maxApplicants?: number;
+  documentsRequired: string[];
+  status: FundingOpportunityStatus;
+  viewCount: number;
+  proposalCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface FundingProposal {
+  id: string;
+  fundingId: string;
+  fundingTitle: string;
+  applicantId: string;
+  applicantUsername: string;
+  applicantRole: UserRole;
+  applicantName: string;
+  proposalTitle: string;
+  proposalDescription: string;
+  budget: number;
+  timeline: string;
+  milestones: Milestone[];
+  teamMembers: string[];
+  attachments: string[];
+  status: FundingProposalStatus;
+  reviewerNotes?: string;
+  approvedAmount?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Disbursement {
+  id: string;
+  amount: number;
+  date: string;
+  status: 'PENDING' | 'RELEASED' | 'WITHHELD';
+  note: string;
+}
+
+export interface FundedProject {
+  id: string;
+  proposalId: string;
+  fundingTitle: string;
+  recipientName: string;
+  totalGrant: number;
+  disbursedAmount: number;
+  currentMilestoneIndex: number;
+  milestones: Milestone[];
+  disbursements: Disbursement[];
+  progressReports: string[];
+  status: 'ACTIVE' | 'COMPLETED' | 'HALTED';
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface AuthResponse {

@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.7.0] - 2026-07-25 (Phase 5 Funding Marketplace Release)
+
+### Added
+- **Funding Opportunities Discovery Feed (`/funding`)**: National grant marketplace with filters for grant types (`National Grants`, `R&D Grants`, `Seed Funds`), eligibility badges (`Universities`, `Startups`, `Researchers`), domain chips, total budget indicators, and application deadline tracking.
+- **Post Funding Opportunity / Grant Call Form (`/funding/create`)**: Grant call publication wizard for government ministries, corporate sponsors, and funding agencies.
+- **Grant Detail View & Proposal Modal (`/funding/[id]`)**: Detail page displaying eligibility requirements, milestone disbursement types, and interactive grant proposal submission modal.
+- **Funder Proposal Evaluation Dashboard (`/funding/[id]/proposals`)**: Funder evaluation portal to review grant proposals, approve funding, and automatically launch funded projects with mobilization grant disbursements.
+- **Active Funded Projects Directory (`/funded-projects`)**: Transparency feed for tracking national grant execution, recipient labs, total awarded amounts, and milestone progress percentages.
+- **Project Milestone & Financial Disbursement Tracker (`/funded-projects/[id]`)**: Financial ledger and milestone compliance tracker displaying tranche disbursements and escrow balances.
+- **Funding Marketplace REST API Endpoints (`apps/api/src/routes/fundingRoutes.ts`)**:
+  - `GET /api/funding` (filtered grant calls)
+  - `GET /api/funding/:id` (detail view & view counter)
+  - `POST /api/funding` (publish grant opportunity)
+  - `POST /api/funding/:id/proposal` (submit technical grant proposal)
+  - `GET /api/funding/:id/proposals` (funder proposal evaluation feed)
+  - `PUT /api/funding/proposals/:proposalId` (approve/reject proposal)
+  - `GET /api/funding/my-proposals` (applicant proposals tracking)
+  - `GET /api/funding/funded-projects` (list active funded projects)
+  - `GET /api/funding/funded-projects/:id` (project ledger & milestone tracker)
+  - `PUT /api/funding/funded-projects/:id/milestone` (update milestone & release tranche disbursement)
+- **Domain Models & Seed Data**: Added `FundingOpportunity`, `FundingProposal`, and `FundedProject` Prisma models and pre-loaded DataStore with realistic Pakistan grants (MoITT 15M AI Grand Challenge, HEC 8M Tech Transfer Fund, Systems Ltd 5M Accelerator Fund) and an active funded project with 2 released disbursement tranches.
+
+---
+
 ## [0.6.0] - 2026-07-25 (Phase 4 Talent Marketplace Release)
 
 ### Added

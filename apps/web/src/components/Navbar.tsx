@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
-import { Shield, Building2, GraduationCap, UserCheck, Sparkles, LogOut, User as UserIcon, Settings, Menu, X, KeyRound, BookOpen, Briefcase } from 'lucide-react';
+import { Shield, Building2, GraduationCap, UserCheck, Sparkles, LogOut, User as UserIcon, Settings, Menu, X, KeyRound, BookOpen, Briefcase, DollarSign } from 'lucide-react';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -74,6 +74,9 @@ export default function Navbar() {
             </Link>
             <Link href="/jobs" className="text-sm font-bold text-gray-700 hover:text-green-600 transition flex items-center gap-1">
               <Briefcase className="w-3.5 h-3.5 text-green-600" /> Jobs & Talent
+            </Link>
+            <Link href="/funding" className="text-sm font-bold text-gray-700 hover:text-green-600 transition flex items-center gap-1">
+              <DollarSign className="w-3.5 h-3.5 text-green-600" /> Grants & Funding
             </Link>
             <Link href="/explore" className="text-sm font-medium text-gray-700 hover:text-green-600 transition">
               Ecosystem Profiles

@@ -21,7 +21,15 @@ import {
   JobType,
   ExperienceLevel,
   JobStatus,
-  JobApplicationStatus
+  JobApplicationStatus,
+  FundingOpportunity,
+  FundingProposal,
+  FundedProject,
+  FundingType,
+  FundingEligibility,
+  FundingOpportunityStatus,
+  FundingProposalStatus,
+  Disbursement
 } from '@innovation/shared-types';
 
 export class DataStore {
@@ -36,6 +44,9 @@ export class DataStore {
   private jobs: Map<string, JobPosting> = new Map();
   private jobApplications: Map<string, JobApplication> = new Map();
   private universityRecommendations: Map<string, UniversityRecommendation> = new Map();
+  private fundingOpps: Map<string, FundingOpportunity> = new Map();
+  private fundingProposals: Map<string, FundingProposal> = new Map();
+  private fundedProjects: Map<string, FundedProject> = new Map();
 
   private constructor() {
     this.seedInitialData();
@@ -171,128 +182,119 @@ export class DataStore {
     this.passwords.set(indUser.email, 'password123');
 
     // -------------------------------------------------------------
-    // SEED JOBS & TALENT POSITIONS (Phase 4 Data)
+    // SEED FUNDING OPPORTUNITIES (Phase 5 Data)
     // -------------------------------------------------------------
-    const job1: JobPosting = {
-      id: 'job-001',
-      companyId: 'comp-001',
-      companyName: 'Systems Limited',
-      companyLogo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150',
-      title: 'Senior Computer Vision & AI Architect',
-      description: 'Systems Limited Enterprise AI Division is hiring a Senior AI Architect to design and deploy real-time computer vision pipelines for industrial automation and agricultural aerial diagnostics.',
-      type: JobType.FULL_TIME,
-      domain: 'Robotics & AI',
-      requiredSkills: ['Computer Vision', 'PyTorch', 'YOLOv8', 'Python', 'Docker', 'CUDA'],
-      preferredSkills: ['ROS2', 'TensorRT', 'Kubernetes'],
-      experienceLevel: ExperienceLevel.SENIOR,
-      salaryMin: 300000,
-      salaryMax: 500000,
+    const fund1: FundingOpportunity = {
+      id: 'fund-001',
+      funderId: 'gov-001',
+      funderUsername: 'moitt',
+      funderRole: UserRole.GOVERNMENT,
+      organizationName: 'Ministry of IT & Telecommunication (MoITT)',
+      organizationLogo: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=150',
+      title: 'National AI & AgriTech Grand Challenge Fund 2026',
+      description: 'MoITT is disbursing 15 Million PKR in milestone-based grant funding to university labs and AI startups developing deployment-ready computer vision solutions for agricultural pest diagnostic & crop yield optimization.',
+      type: FundingType.GRANT,
+      amount: 15000000,
       currency: 'PKR',
-      salaryType: 'MONTHLY',
-      location: 'Lahore / Hybrid',
-      remote: true,
-      hybrid: true,
-      applicationDeadline: '2026-09-15',
-      perks: ['Health Insurance', 'Annual Performance Bonus', 'Remote Work Flexibility', 'Conference Grants'],
-      responsibilities: [
-        'Architect end-to-end PyTorch deep learning models for edge deployment.',
-        'Collaborate with university research labs on technology transfer.'
-      ],
+      fundingType: 'MILESTONE_BASED',
+      eligibility: FundingEligibility.ANY,
+      domain: 'AgriTech',
       requirements: [
-        'M.S. or Ph.D. in Computer Science, AI, or Electrical Engineering.',
-        '5+ years hands-on experience deploying PyTorch models in production.'
+        'Must deploy PyTorch or TensorFlow edge AI models.',
+        'Must provide 10,000+ local dataset images annotated for Punjab crops.',
+        'Must demonstrate field test within 6 months.'
       ],
-      status: JobStatus.ACTIVE,
-      viewCount: 420,
-      applicantCount: 18,
+      applicationDeadline: '2026-10-30',
+      projectStartDate: '2026-11-15',
+      projectEndDate: '2027-11-15',
+      maxApplicants: 20,
+      documentsRequired: ['Technical Architecture Proposal', 'Budget Line Item Breakdown', 'University/Startup Registration Certificate'],
+      status: FundingOpportunityStatus.OPEN,
+      viewCount: 650,
+      proposalCount: 14,
+      createdAt: new Date(Date.now() - 86400000 * 7).toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    const fund2: FundingOpportunity = {
+      id: 'fund-002',
+      funderId: 'gov-001',
+      funderUsername: 'moitt',
+      funderRole: UserRole.GOVERNMENT,
+      organizationName: 'Higher Education Commission (HEC Pakistan)',
+      organizationLogo: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=150',
+      title: 'HEC National Technology Transfer R&D Fund',
+      description: '8 Million PKR grant fund dedicated to university research faculties for patent commercialization and technology transfer to Pakistan industry partners.',
+      type: FundingType.RD_FUNDING,
+      amount: 8000000,
+      currency: 'PKR',
+      fundingType: 'MILESTONE_BASED',
+      eligibility: FundingEligibility.UNIVERSITY,
+      domain: 'CleanEnergy',
+      requirements: ['Must possess registered or filed patent', 'Must have corporate industrial partner endorsement'],
+      applicationDeadline: '2026-09-30',
+      documentsRequired: ['Patent Certificate', 'MOU with Corporate Partner'],
+      status: FundingOpportunityStatus.OPEN,
+      viewCount: 410,
+      proposalCount: 6,
+      createdAt: new Date(Date.now() - 86400000 * 12).toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    this.fundingOpps.set(fund1.id, fund1);
+    this.fundingOpps.set(fund2.id, fund2);
+
+    // Seed Sample Funding Proposal (FAST University -> MoITT 5M Grant Proposal)
+    const prop1: FundingProposal = {
+      id: 'fprop-001',
+      fundingId: 'fund-001',
+      fundingTitle: fund1.title,
+      applicantId: 'uni-001',
+      applicantUsername: 'fast-nuces',
+      applicantRole: UserRole.UNIVERSITY,
+      applicantName: 'FAST National University / NCAI Lab',
+      proposalTitle: 'Hyperspectral Drone Diagnostics & Edge AI System for Wheat Rust',
+      proposalDescription: 'Proposal to deploy 12 multi-spectral agricultural drones paired with edge-AI Raspberry Pi inference payloads across Multan and Faisalabad fields.',
+      budget: 5000000,
+      timeline: '12 Months (4 Quarters)',
+      milestones: [
+        { id: 'fm1', title: 'Phase 1: Multi-Spectral Drone Field Data Collection', description: 'Acquire 10k aerial hyperspectral field images across 50 farms.', dueDate: '2026-12-30', deliverables: ['Annotated PCDH-2026 Dataset', 'Quarterly Progress Report'], status: 'COMPLETED' },
+        { id: 'fm2', title: 'Phase 2: Edge Jetson Nano Model Optimization', description: 'Compress YOLOv8 Transformer model for 45 FPS edge execution.', dueDate: '2027-03-30', deliverables: ['Edge Model Weights', 'Inference Benchmark'], status: 'COMPLETED' },
+        { id: 'fm3', title: 'Phase 3: Live Pilot Demonstration with Farmers', description: 'Deploy drone swarm in Multan and measure crop yield improvement.', dueDate: '2027-06-30', deliverables: ['Farmer Impact Study', 'Final System API'], status: 'IN_PROGRESS' }
+      ],
+      teamMembers: ['Dr. Ali Raza (Principal Investigator)', 'Prof. Tariq Mahmood', '3 FAST M.S. Research Assistants'],
+      attachments: ['https://nu.edu.pk/proposals/agritech-5m-moitt.pdf'],
+      status: FundingProposalStatus.APPROVED,
+      reviewerNotes: 'Outstanding proposal with proven academic track record and clear milestone deliverables.',
+      approvedAmount: 5000000,
+      createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    this.fundingProposals.set(prop1.id, prop1);
+
+    // Seed 1 Active Funded Project with Disbursements
+    const funded1: FundedProject = {
+      id: 'fproj-001',
+      proposalId: prop1.id,
+      fundingTitle: fund1.title,
+      recipientName: 'FAST National University / NCAI Lab',
+      totalGrant: 5000000,
+      disbursedAmount: 2500000,
+      currentMilestoneIndex: 2,
+      milestones: prop1.milestones,
+      disbursements: [
+        { id: 'dis-001', amount: 1500000, date: '2026-11-20', status: 'RELEASED', note: 'Initial Mobilization & Sensor Purchase Grant' },
+        { id: 'dis-002', amount: 1000000, date: '2027-01-15', status: 'RELEASED', note: 'Phase 1 Dataset Completion Milestone Grant' },
+        { id: 'dis-003', amount: 2500000, date: '2027-07-01', status: 'PENDING', note: 'Phase 3 Live Field Pilot Milestone Release' }
+      ],
+      progressReports: ['https://nu.edu.pk/reports/q1-agritech-2026.pdf', 'https://nu.edu.pk/reports/q2-agritech-2027.pdf'],
+      status: 'ACTIVE',
       createdAt: new Date(Date.now() - 86400000 * 4).toISOString(),
       updatedAt: new Date().toISOString()
     };
 
-    const job2: JobPosting = {
-      id: 'job-002',
-      companyId: 'uni-001',
-      companyName: 'FAST National University (NCAI Lab)',
-      companyLogo: 'https://images.unsplash.com/photo-1562774053-701939374585?w=150',
-      title: 'Precision Agriculture Postdoctoral AI Fellow',
-      description: 'National Center of Artificial Intelligence (NCAI) at FAST NUCES is seeking a Postdoc Fellow to lead hyperspectral crop rust diagnostic algorithms under Ministry grant.',
-      type: JobType.RESEARCH_POSITION,
-      domain: 'AgriTech',
-      requiredSkills: ['Hyperspectral Imaging', 'PyTorch', 'Remote Sensing', 'Python'],
-      preferredSkills: ['Drone Flight Operations', 'QGIS'],
-      experienceLevel: ExperienceLevel.EXPERT,
-      salaryMin: 180000,
-      salaryMax: 250000,
-      currency: 'PKR',
-      salaryType: 'MONTHLY',
-      location: 'Islamabad',
-      remote: false,
-      hybrid: true,
-      applicationDeadline: '2026-08-30',
-      perks: ['HEC Postdoc Stipend', 'Lab Equipment Access', 'IEEE Publication Subsidies'],
-      responsibilities: ['Publish top-tier journal papers', 'Mentor M.S. research students'],
-      requirements: ['Ph.D. in Computer Vision or Remote Sensing'],
-      status: JobStatus.ACTIVE,
-      viewCount: 290,
-      applicantCount: 8,
-      createdAt: new Date(Date.now() - 86400000 * 6).toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-
-    const job3: JobPosting = {
-      id: 'job-003',
-      companyId: 'comp-001',
-      companyName: 'Systems Limited',
-      companyLogo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150',
-      title: 'Embedded Edge AI & Drone Autopilot Intern',
-      description: '3-month paid summer internship for final year university students building ROS2 drone autopilot firmware and Jetson Nano inference models.',
-      type: JobType.INTERNSHIP,
-      domain: 'Robotics & AI',
-      requiredSkills: ['C++', 'Python', 'ROS2', 'Linux'],
-      preferredSkills: ['PX4 Autopilot', 'Raspberry Pi'],
-      experienceLevel: ExperienceLevel.ENTRY,
-      salaryMin: 60000,
-      salaryMax: 90000,
-      currency: 'PKR',
-      salaryType: 'MONTHLY',
-      location: 'Islamabad / Lahore',
-      remote: false,
-      hybrid: true,
-      applicationDeadline: '2026-08-15',
-      perks: ['Mentorship by Senior Architects', 'Full-time Hire Opportunity'],
-      responsibilities: ['Write unit tests for ROS2 packages', 'Benchmark Jetson inference FPS'],
-      requirements: ['Final year CS/EE undergraduate student with GPA > 3.2'],
-      status: JobStatus.ACTIVE,
-      viewCount: 680,
-      applicantCount: 45,
-      createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-
-    this.jobs.set(job1.id, job1);
-    this.jobs.set(job2.id, job2);
-    this.jobs.set(job3.id, job3);
-
-    // Seed Sample Job Application (Dr. Ali Raza -> Systems Ltd AI Architect)
-    const sampleJobApp: JobApplication = {
-      id: 'japp-001',
-      jobId: 'job-001',
-      jobTitle: job1.title,
-      companyName: job1.companyName,
-      applicantId: 'ind-001',
-      applicantUsername: 'draliraza',
-      applicantName: 'Dr. Ali Raza',
-      applicantEmail: 'ali.raza@researcher.pk',
-      coverLetter: 'Having completed my Ph.D. at NUST and led drone computer vision projects at NCAI, I am eager to architect commercial scale AI solutions at Systems Limited.',
-      resumeUrl: 'https://aliraza.ai/cv-2026.pdf',
-      status: JobApplicationStatus.INTERVIEW,
-      notes: 'Strong candidate with doctorate and 42 citations.',
-      interviewDate: '2026-08-05T10:00:00Z',
-      createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-
-    this.jobApplications.set(sampleJobApp.id, sampleJobApp);
+    this.fundedProjects.set(funded1.id, funded1);
   }
 
   // --- USER OPERATIONS ---
@@ -360,10 +362,8 @@ export class DataStore {
     return Array.from(this.users.values());
   }
 
-  // --- TALENT DISCOVERY OPERATIONS ---
   public getAllTalent(filters?: { search?: string; domain?: string; skill?: string }): User[] {
     let list = Array.from(this.users.values()).filter(u => u.role === UserRole.INDIVIDUAL);
-
     if (filters?.search) {
       const q = filters.search.toLowerCase();
       list = list.filter(u => {
@@ -376,19 +376,9 @@ export class DataStore {
         );
       });
     }
-
-    if (filters?.skill) {
-      const sk = filters.skill.toLowerCase();
-      list = list.filter(u => {
-        const prof = u.profile as any;
-        return prof?.skills?.some((s: string) => s.toLowerCase().includes(sk));
-      });
-    }
-
     return list;
   }
 
-  // --- OPPORTUNITY OPERATIONS ---
   public getAllOpportunities(filters?: { type?: string; domain?: string; search?: string; status?: string; featured?: boolean }): Opportunity[] {
     let list = Array.from(this.opportunities.values());
     if (filters?.type) list = list.filter(o => o.type === filters.type);
@@ -521,19 +511,16 @@ export class DataStore {
     return Array.from(this.collabInquiries.values()).filter(c => c.researchId === researchId);
   }
 
-  // --- JOB MARKETPLACE OPERATIONS (Phase 4) ---
   public getAllJobs(filters?: { type?: string; domain?: string; experienceLevel?: string; remote?: boolean; search?: string }): JobPosting[] {
     let list = Array.from(this.jobs.values());
-
     if (filters?.type) list = list.filter(j => j.type === filters.type);
     if (filters?.domain) list = list.filter(j => j.domain.toLowerCase() === filters.domain?.toLowerCase());
     if (filters?.experienceLevel) list = list.filter(j => j.experienceLevel === filters.experienceLevel);
     if (filters?.remote) list = list.filter(j => j.remote);
     if (filters?.search) {
       const q = filters.search.toLowerCase();
-      list = list.filter(j => j.title.toLowerCase().includes(q) || j.description.toLowerCase().includes(q) || j.companyName.toLowerCase().includes(q));
+      list = list.filter(j => j.title.toLowerCase().includes(q) || j.description.toLowerCase().includes(q));
     }
-
     return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
@@ -562,26 +549,20 @@ export class DataStore {
   }
 
   public getApplicationsForJob(jobId: string): JobApplication[] {
-    return Array.from(this.jobApplications.values())
-      .filter(a => a.jobId === jobId)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return Array.from(this.jobApplications.values()).filter(a => a.jobId === jobId);
   }
 
   public getApplicationsForApplicant(applicantId: string): JobApplication[] {
-    return Array.from(this.jobApplications.values())
-      .filter(a => a.applicantId === applicantId)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return Array.from(this.jobApplications.values()).filter(a => a.applicantId === applicantId);
   }
 
   public updateJobApplicationStatus(appId: string, status: JobApplicationStatus, notes?: string, interviewDate?: string): JobApplication | undefined {
     const app = this.jobApplications.get(appId);
     if (!app) return undefined;
-
     app.status = status;
     if (notes) app.notes = notes;
     if (interviewDate) app.interviewDate = interviewDate;
     app.updatedAt = new Date().toISOString();
-
     this.jobApplications.set(appId, app);
     return app;
   }
@@ -589,5 +570,140 @@ export class DataStore {
   public addUniversityRecommendation(rec: UniversityRecommendation): UniversityRecommendation {
     this.universityRecommendations.set(rec.id, rec);
     return rec;
+  }
+
+  // --- FUNDING MARKETPLACE OPERATIONS (Phase 5) ---
+  public getAllFunding(filters?: { type?: string; eligibility?: string; domain?: string; search?: string }): FundingOpportunity[] {
+    let list = Array.from(this.fundingOpps.values());
+
+    if (filters?.type) list = list.filter(f => f.type === filters.type);
+    if (filters?.eligibility) list = list.filter(f => f.eligibility === filters.eligibility || f.eligibility === FundingEligibility.ANY);
+    if (filters?.domain) list = list.filter(f => f.domain.toLowerCase() === filters.domain?.toLowerCase());
+    if (filters?.search) {
+      const q = filters.search.toLowerCase();
+      list = list.filter(f => f.title.toLowerCase().includes(q) || f.description.toLowerCase().includes(q) || f.organizationName.toLowerCase().includes(q));
+    }
+
+    return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  public getFundingById(id: string): FundingOpportunity | undefined {
+    const f = this.fundingOpps.get(id);
+    if (f) {
+      f.viewCount += 1;
+      this.fundingOpps.set(id, f);
+    }
+    return f;
+  }
+
+  public createFunding(funding: FundingOpportunity): FundingOpportunity {
+    this.fundingOpps.set(funding.id, funding);
+    return funding;
+  }
+
+  public createFundingProposal(prop: FundingProposal): FundingProposal {
+    this.fundingProposals.set(prop.id, prop);
+    const fund = this.fundingOpps.get(prop.fundingId);
+    if (fund) {
+      fund.proposalCount += 1;
+      this.fundingOpps.set(fund.id, fund);
+    }
+    return prop;
+  }
+
+  public getProposalsForFunding(fundingId: string): FundingProposal[] {
+    return Array.from(this.fundingProposals.values())
+      .filter(p => p.fundingId === fundingId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  public getProposalsForApplicant(applicantId: string): FundingProposal[] {
+    return Array.from(this.fundingProposals.values())
+      .filter(p => p.applicantId === applicantId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  public updateFundingProposalStatus(proposalId: string, status: FundingProposalStatus, reviewerNotes?: string, approvedAmount?: number): FundingProposal | undefined {
+    const prop = this.fundingProposals.get(proposalId);
+    if (!prop) return undefined;
+
+    prop.status = status;
+    if (reviewerNotes) prop.reviewerNotes = reviewerNotes;
+    if (approvedAmount) prop.approvedAmount = approvedAmount;
+    prop.updatedAt = new Date().toISOString();
+
+    this.fundingProposals.set(proposalId, prop);
+
+    // If APPROVED, auto-create FundedProject entry
+    if (status === FundingProposalStatus.APPROVED) {
+      const existingProject = Array.from(this.fundedProjects.values()).find(fp => fp.proposalId === proposalId);
+      if (!existingProject) {
+        const newProject: FundedProject = {
+          id: `fproj-${Date.now()}`,
+          proposalId: prop.id,
+          fundingTitle: prop.fundingTitle,
+          recipientName: prop.applicantName,
+          totalGrant: approvedAmount || prop.budget,
+          disbursedAmount: 0,
+          currentMilestoneIndex: 0,
+          milestones: prop.milestones,
+          disbursements: [
+            {
+              id: `dis-${Date.now()}`,
+              amount: (approvedAmount || prop.budget) * 0.3,
+              date: new Date().toISOString().split('T')[0],
+              status: 'RELEASED',
+              note: 'Initial Mobilization Grant Release (30%)'
+            }
+          ],
+          progressReports: [],
+          status: 'ACTIVE',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+
+        newProject.disbursedAmount = newProject.disbursements[0].amount;
+        this.fundedProjects.set(newProject.id, newProject);
+      }
+    }
+
+    return prop;
+  }
+
+  public getAllFundedProjects(): FundedProject[] {
+    return Array.from(this.fundedProjects.values())
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  public getFundedProjectById(id: string): FundedProject | undefined {
+    return this.fundedProjects.get(id);
+  }
+
+  public updateFundedProjectMilestone(projectId: string, milestoneIndex: number, newStatus: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED', releaseDisbursementAmount?: number): FundedProject | undefined {
+    const proj = this.fundedProjects.get(projectId);
+    if (!proj) return undefined;
+
+    if (proj.milestones[milestoneIndex]) {
+      proj.milestones[milestoneIndex].status = newStatus;
+      if (newStatus === 'COMPLETED') {
+        proj.currentMilestoneIndex = Math.min(milestoneIndex + 1, proj.milestones.length - 1);
+      }
+    }
+
+    if (releaseDisbursementAmount && releaseDisbursementAmount > 0) {
+      const newDisbursement: Disbursement = {
+        id: `dis-${Date.now()}`,
+        amount: releaseDisbursementAmount,
+        date: new Date().toISOString().split('T')[0],
+        status: 'RELEASED',
+        note: `Milestone ${milestoneIndex + 1} Completion Release`
+      };
+      proj.disbursements.push(newDisbursement);
+      proj.disbursedAmount += releaseDisbursementAmount;
+    }
+
+    proj.updatedAt = new Date().toISOString();
+    this.fundedProjects.set(projectId, proj);
+    return proj;
   }
 }
