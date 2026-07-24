@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  GOVERNMENT
+  UNIVERSITY
+  COMPANY
+  INDIVIDUAL
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  PENDING_VERIFICATION
+  SUSPENDED
+}
+
+enum CompanyStage {
+  STARTUP
+  SME
+  ENTERPRISE
+}
+
+enum IndividualAvailability {
+  OPEN_TO_WORK
+  BUSY
+  NOT_AVAILABLE
+}
+
+model User {
+  id            String      @id @default(uuid())
+  email         String      @unique
+  username      String      @unique
+  passwordHash  String
+  role          Role
+  status        UserStatus  @default(ACTIVE)
+  emailVerified Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  governmentProfile GovernmentProfile?
+  universityProfile UniversityProfile?
+  companyProfile    CompanyProfile?
+  individualProfile IndividualProfile?
+}
+
+model GovernmentProfile {
+  id                 String   @id @default(uuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizationName   String
+  ministry           String
+  jurisdiction       String
+  website            String?
+  logo               String?
+  contactEmail       String
+  contactPhone       String?
+  verificationStatus String   @default("VERIFIED")
+  nationalFocusAreas String[]
+}
+
+model UniversityProfile {
+  id                 String   @id @default(uuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name               String
+  country            String   @default("Pakistan")
+  city               String
+  ranking            String?
+  accreditation      String?
+  departments        String[]
+  facultiesCount     Int?     @default(0)
+  labsCount          Int?     @default(0)
+  incubators         String[]
+  website            String?
+  logo               String?
+  verificationStatus String   @default("VERIFIED")
+}
+
+model CompanyProfile {
+  id                 String       @id @default(uuid())
+  userId             String       @unique
+  user               User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name               String
+  industry           String
+  size               String
+  stage              CompanyStage @default(STARTUP)
+  description        String
+  website            String?
+  logo               String?
+  verificationStatus String       @default("VERIFIED")
+  techStack          String[]
+}
+
+model IndividualProfile {
+  id                String                 @id @default(uuid())
+  userId            String                 @unique
+  user              User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName         String
+  lastName          String
+  headline          String
+  bio               String
+  education         Json                   @default("[]")
+  experience        Json                   @default("[]")
+  skills            String[]
+  researchInterests String[]
+  githubUrl         String?
+  portfolioUrl      String?
+  linkedinUrl       String?
+  availability      IndividualAvailability @default(OPEN_TO_WORK)
+}
