@@ -33,6 +33,34 @@ enum IndividualAvailability {
   NOT_AVAILABLE
 }
 
+enum ProjectType {
+  GOVERNMENT_CHALLENGE
+  INDUSTRY_CHALLENGE
+  RESEARCH_OPPORTUNITY
+  HACKATHON
+  COMPETITION
+  FUNDING_OPPORTUNITY
+  COLLABORATION_REQUEST
+  OPEN_SOURCE_PROJECT
+}
+
+enum OpportunityStatus {
+  DRAFT
+  OPEN
+  IN_REVIEW
+  FUNDED
+  CLOSED
+  COMPLETED
+}
+
+enum ApplicationStatus {
+  SUBMITTED
+  REVIEWED
+  SHORTLISTED
+  ACCEPTED
+  REJECTED
+}
+
 model User {
   id            String      @id @default(uuid())
   email         String      @unique
@@ -48,6 +76,10 @@ model User {
   universityProfile UniversityProfile?
   companyProfile    CompanyProfile?
   individualProfile IndividualProfile?
+
+  opportunities PostedOpportunity[]
+  applications  Application[]
+  bookmarks     Bookmark[]
 }
 
 model GovernmentProfile {
@@ -114,4 +146,65 @@ model IndividualProfile {
   portfolioUrl      String?
   linkedinUrl       String?
   availability      IndividualAvailability @default(OPEN_TO_WORK)
+}
+
+model PostedOpportunity {
+  id                String            @id @default(uuid())
+  title             String
+  description       String
+  type              ProjectType
+  postedBy          String
+  poster            User              @relation(fields: [postedBy], references: [id], onDelete: Cascade)
+  domain            String
+  budget            Float?
+  currency          String            @default("PKR")
+  budgetType        String            @default("FIXED")
+  deadline          DateTime
+  duration          String?
+  requiredSkills    String[]
+  requiredRoles     String[]
+  status            OpportunityStatus @default(OPEN)
+  visibility        String            @default("PUBLIC")
+  attachments       String[]
+  tags              String[]
+  milestones        Json              @default("[]")
+  featured          Boolean           @default(false)
+  viewCount         Int               @default(0)
+  applicationCount  Int               @default(0)
+  collaboratorCount Int               @default(0)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  applications Application[]
+  bookmarks    Bookmark[]
+}
+
+model Application {
+  id               String            @id @default(uuid())
+  opportunityId    String
+  opportunity      PostedOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  applicantId      String
+  applicant        User              @relation(fields: [applicantId], references: [id], onDelete: Cascade)
+  coverLetter      String
+  proposedApproach String
+  proposedBudget   Float?
+  proposedTimeline String?
+  attachments      String[]
+  status           ApplicationStatus @default(SUBMITTED)
+  reviewNotes      String?
+  reviewedBy       String?
+  reviewedAt       DateTime?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model Bookmark {
+  id            String            @id @default(uuid())
+  userId        String
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  opportunityId String
+  opportunity   PostedOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  createdAt     DateTime          @default(now())
+
+  @@unique([userId, opportunityId])
 }

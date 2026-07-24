@@ -66,9 +66,22 @@ export default function Navbar() {
             <Link href="/" className="text-sm font-medium text-gray-700 hover:text-green-600 transition">
               Overview
             </Link>
+            <Link href="/marketplace" className="text-sm font-bold text-green-700 hover:text-green-800 transition flex items-center gap-1">
+              <Sparkles className="w-3.5 h-3.5" /> Marketplace
+            </Link>
             <Link href="/explore" className="text-sm font-medium text-gray-700 hover:text-green-600 transition">
               Ecosystem Profiles
             </Link>
+            {user && (
+              <>
+                <Link href="/my-applications" className="text-sm font-medium text-gray-700 hover:text-green-600 transition">
+                  My Proposals
+                </Link>
+                <Link href="/saved" className="text-sm font-medium text-gray-700 hover:text-green-600 transition">
+                  Saved
+                </Link>
+              </>
+            )}
           </nav>
 
           {/* User Auth Section */}

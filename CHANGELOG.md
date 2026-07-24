@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.4.0] - 2026-07-25 (Phase 2 Innovation Marketplace Release)
+
+### Added
+- **Marketplace Discovery Feed (`/marketplace`)**: Innovation marketplace feed featuring domain pills (`AgriTech`, `Robotics & AI`, `CleanEnergy`, `FinTech`, `HealthTech`, `EdTech`), ProjectType filter tabs, live search, and bookmarking.
+- **Opportunity Creation Form (`/marketplace/create`)**: Rich posting interface for publishing Government Challenges, Industry RFPs, Research Lab Opportunities, and Hackathons.
+- **Opportunity Detail View (`/marketplace/[id]`)**: Comprehensive detail view with organization badges, grant/budget tags, milestone roadmap, and interactive technical proposal submission modal.
+- **Poster Application Kanban Board (`/marketplace/[id]/applications`)**: 5-column Kanban pipeline board (`Received` ➔ `In Review` ➔ `Shortlisted` ➔ `Accepted` / `Rejected`) for opportunity creators.
+- **Applicant Tracking Dashboard (`/my-applications`)**: User proposal tracking interface displaying submission status and timeline.
+- **Bookmarked Opportunities Dashboard (`/saved`)**: User saved opportunities dashboard.
+- **Marketplace REST API Endpoints (`apps/api/src/routes/marketplaceRoutes.ts`)**:
+  - `GET /api/marketplace` (filtered list)
+  - `GET /api/marketplace/:id` (detail & view counter)
+  - `POST /api/marketplace` (create post)
+  - `PUT /api/marketplace/:id` (update post)
+  - `DELETE /api/marketplace/:id` (delete post)
+  - `POST /api/marketplace/:id/apply` (submit technical proposal)
+  - `GET /api/marketplace/:id/applications` (fetch proposals for poster)
+  - `PUT /api/marketplace/applications/:appId` (kanban status update)
+  - `GET /api/marketplace/my-applications` (fetch applicant's proposals)
+  - `POST /api/marketplace/:id/bookmark` (toggle bookmark)
+  - `GET /api/marketplace/saved` (fetch saved opportunities)
+- **Domain Models & Seed Data**: Added `PostedOpportunity`, `Application`, and `Bookmark` Prisma schema models and pre-loaded DataStore with 4 realistic Pakistan national challenges & grants.
+
+---
+
 ## [0.3.0] - 2026-07-25 (Phase 0 Monorepo & DevOps Foundation Completion)
 
 ### Added

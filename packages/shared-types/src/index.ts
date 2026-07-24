@@ -24,6 +24,34 @@ export enum CompanyStage {
   ENTERPRISE = 'ENTERPRISE'
 }
 
+export enum ProjectType {
+  GOVERNMENT_CHALLENGE = 'GOVERNMENT_CHALLENGE',
+  INDUSTRY_CHALLENGE = 'INDUSTRY_CHALLENGE',
+  RESEARCH_OPPORTUNITY = 'RESEARCH_OPPORTUNITY',
+  HACKATHON = 'HACKATHON',
+  COMPETITION = 'COMPETITION',
+  FUNDING_OPPORTUNITY = 'FUNDING_OPPORTUNITY',
+  COLLABORATION_REQUEST = 'COLLABORATION_REQUEST',
+  OPEN_SOURCE_PROJECT = 'OPEN_SOURCE_PROJECT'
+}
+
+export enum OpportunityStatus {
+  DRAFT = 'DRAFT',
+  OPEN = 'OPEN',
+  IN_REVIEW = 'IN_REVIEW',
+  FUNDED = 'FUNDED',
+  CLOSED = 'CLOSED',
+  COMPLETED = 'COMPLETED'
+}
+
+export enum ApplicationStatus {
+  SUBMITTED = 'SUBMITTED',
+  REVIEWED = 'REVIEWED',
+  SHORTLISTED = 'SHORTLISTED',
+  ACCEPTED = 'ACCEPTED',
+  REJECTED = 'REJECTED'
+}
+
 export interface User {
   id: string;
   email: string;
@@ -112,6 +140,75 @@ export interface IndividualProfile {
   logo?: string;
   avatarUrl?: string;
   availability: IndividualAvailability;
+}
+
+export interface Milestone {
+  id: string;
+  title: string;
+  description: string;
+  dueDate: string;
+  deliverables: string[];
+  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED';
+}
+
+export interface Opportunity {
+  id: string;
+  title: string;
+  description: string;
+  type: ProjectType;
+  postedBy: string; // userId
+  posterUsername: string;
+  posterRole: UserRole;
+  organizationName: string;
+  organizationLogo?: string;
+  domain: string; // AI, HealthTech, AgriTech, CleanEnergy, EdTech, FinTech
+  budget?: number;
+  currency: string; // PKR, USD
+  budgetType: 'FIXED' | 'RANGE' | 'GRANT' | 'TBD';
+  deadline: string;
+  startDate?: string;
+  duration?: string; // e.g. "6 Months"
+  requiredSkills: string[];
+  requiredRoles: string[];
+  status: OpportunityStatus;
+  visibility: 'PUBLIC' | 'PRIVATE' | 'INVITE_ONLY';
+  attachments: string[];
+  tags: string[];
+  milestones: Milestone[];
+  featured?: boolean;
+  viewCount: number;
+  applicationCount: number;
+  collaboratorCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Application {
+  id: string;
+  opportunityId: string;
+  opportunityTitle: string;
+  applicantId: string;
+  applicantUsername: string;
+  applicantRole: UserRole;
+  applicantName: string;
+  coverLetter: string;
+  proposedApproach: string;
+  proposedBudget?: number;
+  proposedTimeline?: string;
+  attachments: string[];
+  status: ApplicationStatus;
+  reviewNotes?: string;
+  reviewedBy?: string;
+  reviewedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Bookmark {
+  id: string;
+  userId: string;
+  opportunityId: string;
+  createdAt: string;
 }
 
 export interface AuthResponse {
