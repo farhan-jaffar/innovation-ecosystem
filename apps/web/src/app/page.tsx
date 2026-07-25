@@ -26,7 +26,7 @@ export default function HomePage() {
       <section className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-green-50/70 via-white to-white border border-green-100 p-8 sm:p-12 text-center max-w-5xl mx-auto shadow-sm">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-100 text-green-800 text-xs font-semibold mb-6 border border-green-200">
           <Sparkles className="w-4 h-4 text-green-600" />
-          <span>Phase 1 Verified: Unified Ecosystem Auth & Profiles</span>
+          <span>Pakistan's National Innovation Ecosystem Platform</span>
         </div>
         
         <h1 className="text-3xl sm:text-5xl font-extrabold text-gray-900 tracking-tight max-w-4xl mx-auto leading-tight">

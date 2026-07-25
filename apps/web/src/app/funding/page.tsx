@@ -81,7 +81,7 @@ export default function FundingDiscoveryPage() {
       <div className="bg-gradient-to-br from-green-50 via-emerald-50/60 to-white p-8 rounded-3xl border border-green-200/80 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="space-y-2 max-w-2xl">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-bold">
-            <DollarSign className="w-3.5 h-3.5" /> Funding & Grants Marketplace — Phase 5
+            <DollarSign className="w-3.5 h-3.5" /> Funding & Grants Marketplace
           </div>
           <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
             Pakistan Grants & Innovation Funding

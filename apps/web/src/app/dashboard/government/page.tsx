@@ -56,7 +56,7 @@ export default function GovernmentDashboardPage() {
         </div>
 
         <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-800/80 text-green-200 rounded-full text-xs font-bold border border-green-700/50">
-          <Shield className="w-3.5 h-3.5" /> Federal Ministry of IT & Telecom (MoITT) — Phase 8 Dashboard
+          <Shield className="w-3.5 h-3.5" /> Federal Ministry of IT & Telecom (MoITT) Dashboard
         </div>
 
         <h1 className="text-3xl font-extrabold tracking-tight">

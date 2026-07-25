@@ -75,7 +75,7 @@ export default function AiAssistantPage() {
       {/* Header Banner */}
       <div className="bg-gradient-to-br from-green-600 via-emerald-600 to-teal-700 p-8 rounded-3xl text-white shadow-sm space-y-2">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 text-white rounded-full text-xs font-bold backdrop-blur-xs">
-          <Sparkles className="w-3.5 h-3.5" /> AI Engine Assistant — Phase 9
+          <Sparkles className="w-3.5 h-3.5" /> AI Ecosystem Assistant
         </div>
         <h1 className="text-3xl font-extrabold tracking-tight">
           AI Ecosystem Assistant (Grok / Llama 3)

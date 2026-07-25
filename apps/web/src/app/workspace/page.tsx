@@ -30,7 +30,7 @@ export default function WorkspaceDirectoryPage() {
       {/* Header Banner */}
       <div className="bg-gradient-to-br from-green-50 via-emerald-50/50 to-white p-8 rounded-3xl border border-green-200/80 shadow-sm space-y-2">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-bold">
-          <MessageSquare className="w-3.5 h-3.5" /> Collaboration Suite — Phase 7
+          <MessageSquare className="w-3.5 h-3.5" /> Collaboration Suite
         </div>
         <h1 className="text-3xl font-extrabold text-gray-900">National Collaboration Workspaces</h1>
         <p className="text-sm text-gray-600 max-w-2xl">

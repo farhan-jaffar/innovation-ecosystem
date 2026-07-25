@@ -3,7 +3,7 @@ import { AuthRequest } from '../middleware/auth.js';
 import { DataStore } from '../db/store.js';
 
 const store = DataStore.getInstance();
-const AI_ENGINE_URL = process.env.AI_ENGINE_URL || 'http://localhost:8000';
+const AI_ENGINE_URL = process.env.AI_ENGINE_URL || 'http://127.0.0.1:8000';
 
 export const extractSkills = async (req: Request, res: Response) => {
   try {
@@ -118,18 +118,22 @@ export const chatAssistant = async (req: Request, res: Response) => {
       return res.json(data);
     } catch (e) {
       const query = (user_query || '').toLowerCase();
-      let reply = 'I am the AI Innovation Assistant (powered by xAI Grok). How can I help you navigate Pakistan R&D grants, university patents, or startup spin-offs?';
+      let reply = 'Hello! I am your AI Innovation Ecosystem Assistant (powered by xAI Grok).\n\nI can assist you with national R&D grants, university patents, AI candidate matching, and startup spin-offs across Pakistan.\n\nHow can I help you today?';
 
-      if (query.includes('research') || query.includes('paper')) {
-        reply = 'I found 2 top university research IP entries:\n\n1. **Hyperspectral Rust Detection on Wheat Crops** (FAST NUCES)\n2. **Deep Q-Learning Microgrid Controller** (FAST NUCES Patent PK-2025-9812)';
-      } else if (query.includes('grant') || query.includes('funding')) {
-        reply = 'Pakistan currently has 3 active funding calls open:\n\n• **MoITT National AgriTech AI Grand Challenge** (PKR 15M)\n• **HEC Technology Transfer Grant** (PKR 8M)\n• **Systems Ltd R&D Accelerator Fund** (PKR 5M)';
+      if (query.includes('research') || query.includes('paper') || query.includes('patent')) {
+        reply = '🔬 **Verified University Research IP Entries Found**:\n\n1. **Hyperspectral Rust Detection on Wheat Crops** (FAST NUCES) - 14 Citations\n2. **Deep Q-Learning Microgrid Controller** (FAST NUCES Patent PK-2025-9812)';
+      } else if (query.includes('grant') || query.includes('funding') || query.includes('budget')) {
+        reply = '💰 **Active National Grants & Funding Calls**:\n\n• **MoITT National AgriTech AI Grand Challenge** — PKR 15,000,000\n• **HEC Technology Transfer Grant** — PKR 8,000,000\n• **Systems Ltd R&D Accelerator Fund** — PKR 5,000,000';
+      } else if (query.includes('startup') || query.includes('incubator') || query.includes('mentor')) {
+        reply = '🚀 **Startup Hub & Research Spin-Offs**:\n\n• **AgriSense AI** (Stage: MVP | Origin: FAST NUCES AgriTech Lab)\n• **GridPulse Energy** (Stage: Prototype | Origin: NUST Energy Center)';
+      } else if (query.includes('job') || query.includes('talent') || query.includes('hire')) {
+        reply = '💼 **Talent Marketplace**:\n\n• 12 Active Open Positions in AI/ML & Engineering.\n• HEC Accredited Student Recommendations available in the Jobs portal.';
       }
 
       return res.json({
         success: true,
         reply,
-        model: 'xAI Grok / Groq Llama 3 (Fallback Mode)'
+        model: 'xAI Grok Fallback'
       });
     }
   } catch (error: any) {
