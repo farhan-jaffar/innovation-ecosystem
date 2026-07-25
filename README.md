@@ -123,18 +123,27 @@ To guarantee 100% uptime even if API credits or network calls are interrupted:
 
 ## 📸 Screenshots of the App in Action
 
-### 1. National Platform Overview & 4-Pillar Hero
-![InnovatePK Hero & Stakeholders](/docs/architecture/system_overview.md)
+### 1. National Platform Overview & 4-Pillar Hero (`/`)
+![InnovatePK Homepage](docs/screenshots/home.png)
 *Connecting Government, Universities, Companies, and Talent in a unified green-accent design system.*
 
-### 2. National Innovation Marketplace & Grants Portal
-*Browse open national grand challenges, submit proposals, and review milestone budgets.*
+---
 
-### 3. Floating AI Assistant & Conversational Chat (xAI Grok)
-*Persistent bottom-left floating widget launching live xAI Grok reasoning for grant & patent queries.*
+### 2. National Innovation Marketplace (`/marketplace`)
+![National Innovation Marketplace](docs/screenshots/marketplace.png)
+*Browse open national grand challenges, search by domain tags, submit proposals, and review milestone budgets.*
 
-### 4. Federal Government Policy Intelligence Dashboard
-*Provincial talent heatmaps, grant disbursement ledgers, and university performance rankings.*
+---
+
+### 3. AI Assistant & Conversational Agent (`/ai-assistant`)
+![AI Assistant Chat Interface](docs/screenshots/ai_assistant.png)
+*Interactive chat powered by xAI Grok API (`grok-4.5`) assisting users with AgriTech grant calls, university research patents, and talent discovery.*
+
+---
+
+### 4. Federal Government Policy Intelligence Dashboard (`/dashboard/government`)
+![Government Policy Dashboard](docs/screenshots/government_dashboard.png)
+*Provincial talent heatmaps, grant disbursement ledgers, and university R&D performance rankings.*
 
 ---
 
