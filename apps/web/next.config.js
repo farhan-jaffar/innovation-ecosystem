@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  transpilePackages: ['@innovation/shared-types', '@innovation/ui'],
-};
+const nextConfig = {};
 
 module.exports = nextConfig;
