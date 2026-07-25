@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2026-07-26 (UI Layout Optimization, Floating AI Chatbot, xAI Grok Integration & Vercel Release)
+
+### Added
+- **Floating AI Assistant Widget (`AiFloatingWidget.tsx`)**:
+  - Persistent floating AI chatbot button fixed at `bottom-6 left-6` on every page via `RootLayout`.
+  - Styled with green accent palette, pulsing indicator dot, and 1-click navigation to `/ai-assistant`.
+- **xAI Grok API Integration (`apps/ai-engine/main.py`)**:
+  - Configured `openai` Python SDK targeting xAI's base URL `https://api.x.ai/v1` with model `grok-4.5`.
+  - Added multi-tier fallback architecture: primary live xAI Grok API $\rightarrow$ secondary Groq Cloud Llama 3 $\rightarrow$ tertiary smart contextual innovation matcher.
+- **Standalone Frontend Types (`apps/web/src/types/index.ts`)**:
+  - Self-contained TypeScript domain interfaces for `apps/web` enabling isolated, zero-dependency Vercel production builds.
+- **Vercel Production Deployment & Domain Alias**:
+  - Deployed Next.js application live to Vercel production at [https://innovation-ecosystem-pk.vercel.app](https://innovation-ecosystem-pk.vercel.app).
+
+### Changed
+- **Laptop-Optimized Compact Navbar (`components/Navbar.tsx`)**:
+  - Restructured top navigation bar from 12+ inline links down to 4 primary inline links (`Marketplace`, `Research`, `Jobs & Talent`, `Grants & Funding`).
+  - Added a grouped **"More" Dropdown** containing `Startup Hub`, `Workspaces`, `Gov & Policy`, `Ecosystem Profiles`, `My Proposals`, and `Saved Items` to eliminate horizontal scrolling on laptop screens (≤1440px).
+  - Replaced text link with quick search icon button linking to `/search`.
+- **Developer Milestone Label Cleanup**:
+  - Removed internal developer `Phase X` text from 10 frontend pages (`/`, `/marketplace`, `/research`, `/jobs`, `/funding`, `/startups`, `/workspace`, `/dashboard/government`, `/ai-assistant`, logo badge, and footer).
+- **Node.js Proxy Controller (`apps/api/src/controllers/aiController.ts`)**:
+  - Updated `AI_ENGINE_URL` to `http://127.0.0.1:8000` for reliable IPv4 Node fetch connection and expanded fallback keyword coverage.
+
+---
+
 ## [1.0.0] - 2026-07-25 (Production Release & Full Platform Integration)
 
 ### Added
